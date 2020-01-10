@@ -1,3 +1,25 @@
+body {
+    background: black;
+}
+
+p,
+label,
+h1,
+table {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+table {
+    font-weight: bold;
+    text-align: left;
+}
+
+.ndmbgold {
+    color: #FFD700;
+}
+
 .center {
     display: block;
     margin-left: auto;
