@@ -1,4 +1,4 @@
-function loadList() {
+async function loadList() {
     let list;
     let xmlhttp;
 
