@@ -8,4 +8,5 @@ function loadList() {
     list = xmlhttp.responseText.split('\n');
 
     document.getElementById('tracknum').innerHTML = `Showing ${list.length} track(s).`;
+    console.log(list);
 }
