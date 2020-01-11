@@ -20,6 +20,11 @@ div {
     transform: translate(-50%, -50%);
 }
 
+img {
+    height: auto;
+    width: 30%;
+}
+
 h1 {
     color: white;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
