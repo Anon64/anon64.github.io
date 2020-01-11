@@ -3,7 +3,7 @@ function loadList() {
     let xmlhttp;
 
     xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "/misc/names.txt", true);
+    xmlhttp.open('GET', "/misc/names.txt", false);
     xmlhttp.send();
     list = xmlhttp.responseText.split('\n');
 
