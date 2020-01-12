@@ -1,6 +1,8 @@
 function wait(ms) {
-    return new Promise(r=>{
-        
+    return new Promise(r => {
+        setTimeout(() => {
+            r();
+        }, ms);
     })
 }
 
