@@ -14,7 +14,7 @@ function loadList() {
         let list = xmlhttp.responseText.split('\n').filter(Boolean);
         let table = document.getElementById('mainlist');
         document.getElementById('tracknum').innerHTML = `Showing ${list.length} track(s).`;
-        for ((name, id) of list) {
+        for ([name, id] of list) {
             let row = table.insertRow(-1);
             row.insertCell(0).innerHTML = id;
             row.insertCell(1).innerHTML = name;
