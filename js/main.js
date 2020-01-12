@@ -1,13 +1,15 @@
 function loadList() {
-    let list;
-    let xmlhttp;
-
-    xmlhttp = new XMLHttpRequest();
+    let xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', "/misc/names.txt");
     xmlhttp.send();
     xmlhttp.onload = () => {
-        list = xmlhttp.responseText.split('\n').filter(Boolean);
+        let list = xmlhttp.responseText.split('\n').filter(Boolean);
+        let table = document.getElementById('mainlist');
         document.getElementById('tracknum').innerHTML = `Showing ${list.length} track(s).`;
-        console.log(list);
+        list.forEach((name, id) => {
+            let row = table.insertRow(id + 1);
+            row.insertCell(0).innerHTML = id;
+            row.insertCell(1).innerHTML = name;
+        })
     }
 }
