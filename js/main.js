@@ -35,11 +35,14 @@ async function loadList() {
         }
     }
 
-    for (let [id, name] of list.slice(index, index+length).entries()) {
-        let row = table.insertRow(-1);
-        row.insertCell(0).innerHTML = id;
-        row.insertCell(1).innerHTML = name;
-        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
-        await wait(30);
+    if (!(table.rows.length > length)) {
+        for (let [id, name] of list.slice(index, index + length).entries()) {
+            let row = table.insertRow(-1);
+            row.insertCell(0).innerHTML = id;
+            row.insertCell(1).innerHTML = name;
+            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
+            await wait(30);
+        }
     }
+
 }
