@@ -28,7 +28,7 @@ async function loadList() {
 
     if (table.rows.length > 1) {
         let rowCount = table.rows.length;
-        for (let i = rowCount - 1; i > 0; i--) {
+        for (let i = rowCount - 1; i > length; i--) {
             table.deleteRow(i);
             document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
             await wait(20);

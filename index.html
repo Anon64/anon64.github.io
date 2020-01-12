@@ -22,7 +22,7 @@
                 <p id='tracknum'>Showing 0 track(s).</p>
             </div>
             <div>
-                <p>Amount to load</p>
+                <label for='amount'>Amount to load</label>
                 <select name='amount' id='amount'>
                     <option>20</option>
                     <option>30</option>
@@ -38,7 +38,8 @@
                     <option>750</option>
                     <option>1000</option>
                 </select>
-                <input type='text' value='' placeholder='Start from index...' id='startindex'>
+                <label for='startfrom'>Start from index</label>
+                <input type='text' name='startfrom' placeholder='Start from index...' value='' id='startindex'>
                 <input type='button' value='Submit' onclick='loadList()' class='btn'>
             </div>
             <div>
