@@ -1,3 +1,9 @@
+function wait(ms) {
+    return new Promise(r=>{
+        
+    })
+}
+
 function loadList() {
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', "/misc/names.txt");
@@ -6,8 +12,8 @@ function loadList() {
         let list = xmlhttp.responseText.split('\n').filter(Boolean);
         let table = document.getElementById('mainlist');
         document.getElementById('tracknum').innerHTML = `Showing ${list.length} track(s).`;
-        list.forEach((name, id) => {
-            let row = table.insertRow(id + 1);
+        list.forEach(async (name, id) => {
+            let row = table.insertRow(-1);
             row.insertCell(0).innerHTML = id;
             row.insertCell(1).innerHTML = name;
         })
