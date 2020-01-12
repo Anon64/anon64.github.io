@@ -10,7 +10,7 @@ function loadList() {
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', "/misc/names.txt");
     xmlhttp.send();
-    xmlhttp.onload = () => {
+    xmlhttp.onload = async () => {
         let list = xmlhttp.responseText.split('\n').filter(Boolean);
         let table = document.getElementById('mainlist');
         document.getElementById('tracknum').innerHTML = `Showing ${list.length} track(s).`;
