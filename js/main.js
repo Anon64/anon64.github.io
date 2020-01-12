@@ -30,16 +30,16 @@ async function loadList() {
         let rowCount = table.rows.length;
         for (let i = rowCount - 1; i > 0; i--) {
             table.deleteRow(i);
-            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length} track(s) of ${list.length}.`;
+            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
             await wait(20);
         }
     }
 
-    for (let [id, name] of list.slice(index, length).entries()) {
-        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length} track(s) of ${list.length}.`;
+    for (let [id, name] of list.slice(index, index+length).entries()) {
         let row = table.insertRow(-1);
         row.insertCell(0).innerHTML = id;
         row.insertCell(1).innerHTML = name;
+        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
         await wait(30);
     }
 }

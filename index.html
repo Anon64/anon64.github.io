@@ -22,26 +22,24 @@
                 <p id='tracknum'>Showing 0 track(s).</p>
             </div>
             <div>
-                <form>
-                    <label for='amount'>Amount to load</label>
-                    <select name='amount' id='amount'>
-                        <option>20</option>
-                        <option>30</option>
-                        <option>40</option>
-                        <option>50</option>
-                        <option>75</option>
-                        <option>100</option>
-                        <option>150</option>
-                        <option>200</option>
-                        <option>300</option>
-                        <option>400</option>
-                        <option>500</option>
-                        <option>750</option>
-                        <option>1000</option>
-                    </select>
-                    <input type='text' name='startfrom' placeholder='Start from index...' value='0' id='startindex'>
-                    <input type='button' value='Submit' onclick='loadList()' class='btn'>
-                </form>
+                <p>Amount to load</p>
+                <select name='amount' id='amount'>
+                    <option>20</option>
+                    <option>30</option>
+                    <option>40</option>
+                    <option>50</option>
+                    <option>75</option>
+                    <option>100</option>
+                    <option>150</option>
+                    <option>200</option>
+                    <option>300</option>
+                    <option>400</option>
+                    <option>500</option>
+                    <option>750</option>
+                    <option>1000</option>
+                </select>
+                <input type='text' value='' placeholder='Start from index...' id='startindex'>
+                <input type='button' value='Submit' onclick='loadList()' class='btn'>
             </div>
             <div>
                 <table id='mainlist' border='0'>
