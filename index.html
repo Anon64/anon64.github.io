@@ -22,7 +22,7 @@
                 <p id='tracknum'>Showing 0 track(s).</p>
             </div>
             <div>
-                <form onsubmit='loadList()'>
+                <form>
                     <label for='amount'>Amount to load</label>
                     <select name='amount' id='amount'>
                         <option>20</option>
@@ -40,7 +40,7 @@
                         <option>1000</option>
                     </select>
                     <input type='text' name='startfrom' placeholder='Start from index...' value='0' id='startindex'>
-                    <input type='button' value='Submit' class='btn'>
+                    <input type='button' value='Submit' onclick='loadList()' class='btn'>
                 </form>
             </div>
             <div>
