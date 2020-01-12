@@ -12,13 +12,13 @@ function onLoad() {
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', "/misc/names.txt");
     xmlhttp.send();
-    xmlhttp.onload = async () => {
+    xmlhttp.onload = () => {
         list = xmlhttp.responseText.split('\n').filter(Boolean);
         loadList();
     }
 }
 
-function loadList() {
+async function loadList() {
     let table = document.getElementById('mainlist');
 
     let idval = document.getElementById('startindex').value;
