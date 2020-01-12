@@ -14,7 +14,7 @@ function onLoad() {
     xmlhttp.send();
     xmlhttp.onload = async () => {
         list = xmlhttp.responseText.split('\n').filter(Boolean);
-        loadList()
+        loadList();
     }
 }
 
