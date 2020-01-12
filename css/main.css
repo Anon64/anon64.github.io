@@ -16,6 +16,11 @@ table {
     text-align: left;
 }
 
+table#mainlist {
+    color: white;
+    width: 100%;
+}
+
 .ndmbgold {
     color: #FFD700;
 }
