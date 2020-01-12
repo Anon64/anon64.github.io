@@ -13,13 +13,35 @@
     <script src='/js/main.js'></script>
 </head>
 
-<body onload='loadList()'>
+<body onload='onLoad()'>
     <img src='/img/underconstruction.gif' class='center'>
     <div id='wrap'>
         <div id='main'>
             <div>
                 <h1>Welcome to the <span class='ndmbgold'>NDMB</span> tracklist!</h1>
                 <p id='tracknum'>Showing 0 track(s).</p>
+            </div>
+            <div>
+                <form onsubmit='loadList()'>
+                    <label for='amount'>Amount to load</label>
+                    <select name='amount' id='amount'>
+                        <option>20</option>
+                        <option>30</option>
+                        <option>40</option>
+                        <option>50</option>
+                        <option>75</option>
+                        <option>100</option>
+                        <option>150</option>
+                        <option>200</option>
+                        <option>300</option>
+                        <option>400</option>
+                        <option>500</option>
+                        <option>750</option>
+                        <option>1000</option>
+                    </select>
+                    <input type='text' name='startfrom' placeholder='Start from index...' value='0' id='startindex'>
+                    <input type='submit' value='submit' class='btn'>
+                </form>
             </div>
             <div>
                 <table id='mainlist' border='0'>

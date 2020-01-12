@@ -6,25 +6,40 @@ function wait(ms) {
     })
 }
 
-function loadList() {
+let list;
+
+function onLoad() {
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "./misc/names.txt");
+    xmlhttp.open('GET', "/misc/names.txt");
     xmlhttp.send();
     xmlhttp.onload = async () => {
-        let list = xmlhttp.responseText.split('\n').filter(Boolean);
-        let table = document.getElementById('mainlist');
-        for (let [id, name] of list.entries()) {
-            document.getElementById('tracknum').innerHTML = `Showing ${list.indexOf(name)+1} track(s).`;
-            let row = table.insertRow(-1);
-            row.insertCell(0).innerHTML = id;
-            row.insertCell(1).innerHTML = name;
-            await wait(30);
+        list = xmlhttp.responseText.split('\n').filter(Boolean);
+        loadList()
+    }
+}
+
+function loadList() {
+    let table = document.getElementById('mainlist');
+
+    let idval = document.getElementById('startindex').value;
+    let index = isNaN(idval) ? 0 : parseInt(idval) || 0;
+
+    let length = document.getElementById('amount').value || 20;
+
+    if (table.rows.length > 1) {
+        let rowCount = table.rows.length;
+        for (let i = rowCount - 1; i > 0; i--) {
+            table.deleteRow(i);
+            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
+            await wait(20);
         }
-        /*list.forEach(async (name, id) => {
-            let row = table.insertRow(-1);
-            row.insertCell(0).innerHTML = id;
-            row.insertCell(1).innerHTML = name;
-        });
-        */
+    }
+
+    for (let [id, name] of list.slice(index, length).entries()) {
+        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
+        let row = table.insertRow(-1);
+        row.insertCell(0).innerHTML = id;
+        row.insertCell(1).innerHTML = name;
+        await wait(30);
     }
 }

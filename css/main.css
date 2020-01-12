@@ -46,3 +46,25 @@ table#mainlist {
     margin-right: auto;
     width: 50%;
 }
+
+.btn {
+    background-color: #FFD700;
+    -moz-border-radius: 42px;
+    -webkit-border-radius: 42px;
+    border-radius: 42px;
+    color: #000000;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 1px 6px;
+    border: #f0c800;
+}
+
+.btn:hover {
+    background-color: #f0c800;
+}
+
+.btn:active {
+    position: relative;
+    top: 1px;
+}
