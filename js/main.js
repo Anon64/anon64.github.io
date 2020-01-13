@@ -74,7 +74,7 @@ async function loadList() {
 
     let summatory1 = 0;
     let songlist = search ? searchlist(search).slice(0, length) : list.slice(index, index + length).entries();
-    let listlength = songlist.length;
+    let listlength = search ? songlist.length : list.slice(index, index + length).length;
     for (let [id, name] of songlist) {
         let row = table.insertRow(-1);
         row.insertCell(0).innerHTML = search ? id : id + index;
