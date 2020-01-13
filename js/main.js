@@ -64,7 +64,7 @@ async function loadList() {
         for (let i = 1; i < rowCount; i++) {
             table.deleteRow(1);
             document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
-            let newtime = (500 - summatory) / ((1.05 - Math.pow(1.05, -(rowCount - 2))) / (1.05 - 1));
+            let newtime = (500 - summatory) / ((1.05 - Math.pow(1.05, -(Math.min(rowCount, 100) - 1))) / (1.05 - 1));
             summatory += newtime;
             if (newtime > 1) await wait(newtime);
         }
@@ -78,7 +78,7 @@ async function loadList() {
         row.insertCell(0).innerHTML = search ? id : id + index;
         row.insertCell(1).innerHTML = name;
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
-        let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(listlength - 1))) / (1.05 - 1));
+        let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
         summatory += newtime;
         if (newtime > 1) await wait(newtime);
     }
