@@ -28,24 +28,18 @@ async function loadList() {
 
     if (table.rows.length > 1) {
         let rowCount = table.rows.length;
-        for (let i = rowCount - 1; i > length; i--) {
+        for (let i = rowCount - 1; i > 0; i--) {
             table.deleteRow(i);
             document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
             await wait(20);
         }
     }
-    let here = [];
-    let rows = document.getElementById('mainlist').rows;
-    for (h = 0; h < rows.length; h++) here.push(rows[h].childNodes[0].innerText);
-    if (!(table.rows.length > length)) {
-        for (let [id, name] of list.slice(index, index + length).entries()) {
-            if(here.includes(id)) continue;
-            let row = table.insertRow(-1);
-            row.insertCell(0).innerHTML = id;
-            row.insertCell(1).innerHTML = name;
-            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
-            await wait(30);
-        }
-    }
 
+    for (let [id, name] of list.slice(index, index + length).entries()) {
+        let row = table.insertRow(-1);
+        row.insertCell(0).innerHTML = id;
+        row.insertCell(1).innerHTML = name;
+        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
+        await wait(30);
+    }
 }
