@@ -1,3 +1,5 @@
+let DEBUG = false;
+
 function wait(ms) {
     return new Promise(r => {
         setTimeout(() => {
@@ -80,6 +82,7 @@ async function loadList() {
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
         let newtime = (1000 - summatory1) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
         summatory1 += newtime;
+        if (DEBUG) console.log(newtime);
         if (newtime > 1) await wait(newtime);
     }
     await wait(200);
