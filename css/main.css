@@ -21,6 +21,11 @@ table#mainlist {
     width: 100%;
 }
 
+* {
+    margin: 0;
+    padding: 0;
+}
+
 #wrap {
     min-height: 100%;
 }
@@ -32,10 +37,8 @@ table#mainlist {
 
 #footer {
     position: relative;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 1rem;
+    margin-top: -25px;
+    height: 25px;
 }
 
 .ndmbgold {
