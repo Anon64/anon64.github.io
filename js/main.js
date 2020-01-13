@@ -29,7 +29,7 @@ async function loadList() {
     let summatory = 0;
     if (table.rows.length > 1) {
         let rowCount = table.rows.length;
-        for (let i = 1; i < rowCount - 1; i++) {
+        for (let i = 1; i < rowCount; i++) {
             table.deleteRow(1);
             document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
             let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(rowCount - 2))) / (1.05 - 1));
