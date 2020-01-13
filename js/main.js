@@ -37,12 +37,15 @@ async function loadList() {
             await wait(newtime);
         }
     }
+
+    summatory = 0;
+    let listlength = list.slice(index, index + length).length;
     for (let [id, name] of list.slice(index, index + length).entries()) {
         let row = table.insertRow(-1);
         row.insertCell(0).innerHTML = id + index;
         row.insertCell(1).innerHTML = name;
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
-        let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(list.slice(index, index + length).length - 1))) / (1.05 - 1));
+        let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(listlength - 1))) / (1.05 - 1));
         summatory += newtime;
         await wait(newtime);
     }
