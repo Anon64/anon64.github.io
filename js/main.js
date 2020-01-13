@@ -26,7 +26,7 @@ function bettersort(q) {
 
 function searchlist(q = '') {
     return list.filter(n => {
-        n.toLowerCase().includes(q) && !!v
+        n.toLowerCase().includes(q) && !!n
     }).sort(bettersort(q)).entries();
 }
 
