@@ -25,9 +25,7 @@ function bettersort(q) {
 }
 
 function searchlist(q = '') {
-    return list.filter(n => {
-        n.toLowerCase().includes(q) && !!n
-    }).sort(bettersort(q)).entries();
+    return list.filter(n => (n.toLowerCase().includes(q) && !!n)).sort(bettersort(q)).entries();
 }
 
 let busy = false;
@@ -52,7 +50,7 @@ async function loadList() {
             document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
             let newtime = (500 - summatory) / ((1.05 - Math.pow(1.05, -(rowCount - 2))) / (1.05 - 1));
             summatory += newtime;
-            if (newtime > 10) await wait(newtime);
+            if (newtime > 1) await wait(newtime);
         }
     }
 
@@ -66,7 +64,7 @@ async function loadList() {
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
         let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(listlength - 1))) / (1.05 - 1));
         summatory += newtime;
-        if (newtime > 10) await wait(newtime);
+        if (newtime > 1) await wait(newtime);
     }
     await wait(200);
     busy = false;
