@@ -14,6 +14,18 @@ function onLoad() {
     xmlhttp.send();
     xmlhttp.onload = () => {
         list = xmlhttp.responseText.split('\n').filter(Boolean);
+        document.getElementById('searchbox').addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById('subtn').click();
+            }
+        });
+        document.getElementById('amount').addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById('subtn').click();
+            }
+        });
         loadList();
     }
 }
