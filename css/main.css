@@ -39,6 +39,7 @@ table#mainlist {
 }
 
 .footer {
+    margin-top: -25px;
     height: 25px;
 }
 
