@@ -36,7 +36,7 @@ async function loadList() {
     }
     let here = [];
     let rows = document.getElementById('mainlist').rows;
-    for (h = 0; h < tows.length; h++) here.push(rows[h].childNodes[0].innerText);
+    for (h = 0; h < rows.length; h++) here.push(rows[h].childNodes[0].innerText);
     if (!(table.rows.length > length)) {
         for (let [id, name] of list.slice(index, index + length).entries()) {
             if(here.includes(id)) continue;
