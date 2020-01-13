@@ -70,7 +70,7 @@ async function loadList() {
         }
     }
 
-    summatory = 0;
+    let summatory1 = 0;
     let songlist = search ? searchlist(search).slice(0, length) : list.slice(index, index + length).entries();
     let listlength = songlist.length;
     for (let [id, name] of songlist) {
@@ -78,8 +78,8 @@ async function loadList() {
         row.insertCell(0).innerHTML = search ? id : id + index;
         row.insertCell(1).innerHTML = name;
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
-        let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
-        summatory += newtime;
+        let newtime = (1000 - summatory1) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
+        summatory1 += newtime;
         if (newtime > 1) await wait(newtime);
     }
     await wait(200);
