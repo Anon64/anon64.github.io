@@ -31,16 +31,14 @@ table#mainlist {
 
 #wrap {
     min-height: 100%;
+    margin-bottom: -25px;
 }
 
 #main {
-    overflow: auto;
     padding-bottom: 25px;
 }
 
-#footer {
-    position: relative;
-    margin-top: -25px;
+.footer {
     height: 25px;
 }
 
