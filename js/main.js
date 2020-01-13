@@ -34,9 +34,12 @@ async function loadList() {
             await wait(20);
         }
     }
-
+    let here = [];
+    let rows = document.getElementById('mainlist').rows;
+    for (h = 0; h < tows.length; h++) here.push(rows[h].childNodes[0].innerText);
     if (!(table.rows.length > length)) {
         for (let [id, name] of list.slice(index, index + length).entries()) {
+            if(here.includes(id)) continue;
             let row = table.insertRow(-1);
             row.insertCell(0).innerHTML = id;
             row.insertCell(1).innerHTML = name;
