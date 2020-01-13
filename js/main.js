@@ -54,7 +54,7 @@ async function loadList() {
     let idval = document.getElementById('startindex').value;
     let index = isNaN(idval) ? 0 : parseInt(idval) || 0;
 
-    let length = document.getElementById('amount').value || 20;
+    let length = parseInt(document.getElementById('amount').value) || 20;
 
     let search = document.getElementById('searchbox').value || '';
 
