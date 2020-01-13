@@ -31,17 +31,16 @@ table#mainlist {
 
 #wrap {
     min-height: 100%;
-    margin-bottom: -50px;
+    margin-bottom: -25px;
 }
 
 #main {
-    overflow: auto;
     padding-bottom: 25px;
-    height: 50px;
+    height: 25px;
 }
 
 .footer {
-    height: 50px;
+    height: 25px;
 }
 
 .ndmbgold {
