@@ -20,12 +20,16 @@ function onLoad() {
 
 function bettersort(q) {
     return function (a, b) {
-        return a.indexOf(q) - b.indexOf(q);
+        return a[1].indexOf(q) - b[1].indexOf(q);
     }
 }
 
 function searchlist(q = '') {
-    return list.filter(n => (n.toLowerCase().includes(q) && !!n)).sort(bettersort(q)).entries();
+    let out = [];
+    for ([id, name] of list.entries()) {
+        out.push([id, name]);
+    }
+    return out.filter(n => (n[1].toLowerCase().includes('test') && !!n)).sort(bettersort(q));
 }
 
 let busy = false;
@@ -55,11 +59,11 @@ async function loadList() {
     }
 
     summatory = 0;
-    let songlist = search ? searchlist(search) : list.slice(index, index + length).entries();
+    let songlist = search ? searchlist(search).slice(0, length) : list.slice(index, index + length).entries();
     let listlength = songlist.length;
     for (let [id, name] of songlist) {
         let row = table.insertRow(-1);
-        row.insertCell(0).innerHTML = id + index;
+        row.insertCell(0).innerHTML = search ? id : id + index;
         row.insertCell(1).innerHTML = name;
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
         let newtime = (2000 - summatory) / ((1.05 - Math.pow(1.05, -(listlength - 1))) / (1.05 - 1));
