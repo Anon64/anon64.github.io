@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    margin: 0;
     background: black;
 }
 
@@ -30,17 +31,17 @@ table#mainlist {
 
 #wrap {
     min-height: 100%;
+    margin-bottom: -50px;
 }
 
 #main {
     overflow: auto;
     padding-bottom: 25px;
+    height: 50px;
 }
 
-#footer {
-    position: relative;
-    margin-top: -25px;
-    height: 25px;
+.footer {
+    height: 50px;
 }
 
 .ndmbgold {
