@@ -29,7 +29,7 @@ function searchlist(q = '') {
     for ([id, name] of list.entries()) {
         out.push([id, name]);
     }
-    return out.filter(n => (n[1].toLowerCase().includes('test') && !!n)).sort(bettersort(q));
+    return out.filter(n => (n[1].toLowerCase().includes(q) && !!n)).sort(bettersort(q));
 }
 
 let busy = false;
