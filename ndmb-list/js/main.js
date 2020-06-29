@@ -1,4 +1,4 @@
-let DEBUG = false;
+const DEBUG = false;
 
 function wait(ms) {
     return new Promise(r => {
@@ -12,7 +12,7 @@ let list;
 
 function onLoad() {
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "/misc/names.txt");
+    xmlhttp.open('GET', "/ndmb-list/misc/names.txt");
     xmlhttp.send();
     xmlhttp.onload = () => {
         list = xmlhttp.responseText.split('\n').filter(Boolean);
@@ -65,7 +65,7 @@ async function loadList() {
         let rowCount = table.rows.length;
         for (let i = 1; i < rowCount; i++) {
             table.deleteRow(1);
-            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
+            document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length - 1} track(s) of ${list.length}.`;
             let newtime = (500 - summatory) / ((1.05 - Math.pow(1.05, -(Math.min(rowCount, 100) - 1))) / (1.05 - 1));
             summatory += newtime;
             if (newtime > 1) await wait(newtime);
@@ -79,7 +79,7 @@ async function loadList() {
         let row = table.insertRow(-1);
         row.insertCell(0).innerHTML = search ? id : id + index;
         row.insertCell(1).innerHTML = name;
-        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length-1} track(s) of ${list.length}.`;
+        document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length - 1} track(s) of ${list.length}.`;
         let newtime = (1000 - summatory1) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
         summatory1 += newtime;
         if (DEBUG) console.log(newtime);
