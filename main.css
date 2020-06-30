@@ -39,9 +39,8 @@ table#mainlist {
 }
 
 .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    margin-top: -25px;
+    height: 25px;
 }
 
 .ndmbgold {
