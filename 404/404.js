@@ -6,7 +6,8 @@ const messages = [
     'could you try that again, please?',
     'are you sure you did that right?',
     'nope, try again.',
-    'whoops, something went wrong.'
+    'whoops, something went wrong.',
+    'you seem lost, need help?'
 ];
 
 //bruh what are you doing here, stop snooping around.
