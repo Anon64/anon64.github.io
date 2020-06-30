@@ -1,0 +1,22 @@
+{
+    "background": {
+        "key": "back0",
+        "x": 480,
+        "y": 300
+    },
+    "buttons": [
+        {
+            "text": "Start Game",
+            "x": 480,
+            "y": 260,
+            "action": "startgame"
+        }
+    ],
+    "text": [
+        {
+            "text": "ver 0.1",
+            "x": 5,
+            "y": 600
+        }
+    ]
+}
