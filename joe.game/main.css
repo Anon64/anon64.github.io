@@ -1,0 +1,30 @@
+@font-face {
+    font-family: joefont;
+    src: url('joefont.ttf');
+}
+
+body {
+    background: lime;
+}
+
+p {
+    color: white;
+    font-family: joefont;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.footer {
+    position: fixed;
+    bottom: -15px;
+    left: 0;
+}
+
+.ndmbgold {
+    color: #FFD700;
+}
