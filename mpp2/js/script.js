@@ -1106,7 +1106,7 @@ $(function () {
 	if (channel_id == "") channel_id = "lobby";
 
 	var wssport = window.location.hostname == "www.multiplayerpiano.com" ? 443 : 8080;
-	var gClient = new Client('wss://headless-mbp.gq:2269');//new Client("ws://" + window.location.hostname + ":" + wssport);
+	var gClient = new Client('ws://headless-mbp.gq:2269'); //new Client("ws://" + window.location.hostname + ":" + wssport);
 	gClient.setChannel(channel_id);
 	gClient.start();
 
