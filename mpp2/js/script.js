@@ -1102,7 +1102,10 @@ $(function () {
 		return;
 		//parameters = location.search.substring(1).split("&")
 	}
-	if (window.location.search.startsWith("?")) channel_id = /[^\?]\w+/g.exec(window.location.search)[0];
+
+	var bruhrex = /[^\?]?\w+/g;
+	var exec = bruhrex.exec(window.location.search);
+	if (window.location.search.startsWith("?")) channel_id = exec ? exec[0] : "";
 	if (channel_id == "") channel_id = "lobby";
 
 	var wssport = window.location.hostname == "www.multiplayerpiano.com" ? 443 : 8080;
