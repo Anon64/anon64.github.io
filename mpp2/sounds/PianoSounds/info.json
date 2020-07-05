@@ -1,5 +1,5 @@
 {
-    "name": "MPP Default",
+    "name": "PianoSounds",
     "keys": [
         "a-1",
         "as-1",
@@ -90,5 +90,5 @@
         "b6",
         "c7"
     ],
-    "ext": ".wav.mp3"
+    "ext": ".mp3"
 }

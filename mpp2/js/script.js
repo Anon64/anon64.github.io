@@ -33,7 +33,7 @@ $(function () {
 
 
 	var gSoundPath = "/mpp2/sounds/default/";
-	var gSoundExt = ".mp3";
+	var gSoundExt = ".wav.mp3";
 
 	/* these dont work
 	
@@ -435,7 +435,7 @@ $(function () {
 					+ " / status: " + req.status
 					+ " / ArrayBuffer: " + (req.response instanceof ArrayBuffer)
 					+ " / byteLength: " + (req.response && req.response.byteLength ? req.response.byteLength : "undefined"));*/
-				new Notification({
+				new MPPNotification({
 					id: "audio-download-error", title: "Problem", text: "For some reason, an audio download failed with a status of " + req.status + ". ",
 					target: "#piano", duration: 10000
 				});
@@ -1390,7 +1390,7 @@ $(function () {
 
 	// Handle notifications
 	gClient.on("notification", function (msg) {
-		new Notification(msg);
+		new MPPNotification(msg);
 	});
 
 	// Don't foget spin
@@ -1861,7 +1861,7 @@ $(function () {
 
 	////////////////////////////////////////////////////////////////
 
-	var Notification = function (par) {
+	var MPPNotification = function (par) {
 		EventEmitter.call(this);
 
 		var par = par || {};
@@ -1912,10 +1912,10 @@ $(function () {
 		return this;
 	}
 
-	mixin(Notification.prototype, EventEmitter.prototype);
-	Notification.prototype.constructor = Notification;
+	mixin(MPPNotification.prototype, EventEmitter.prototype);
+	MPPNotification.prototype.constructor = MPPNotification;
 
-	Notification.prototype.position = function () {
+	MPPNotification.prototype.position = function () {
 		var pos = this.target.offset();
 		var x = pos.left - (this.domElement.width() / 2) + (this.target.width() / 4);
 		var y = pos.top - this.domElement.height() - 8;
@@ -1924,10 +1924,13 @@ $(function () {
 			x -= ((x + width) - $("body").width());
 		}
 		if (x < 0) x = 0;
-		this.domElement.offset({ left: x, top: y });
+		this.domElement.offset({
+			left: x,
+			top: y
+		});
 	};
 
-	Notification.prototype.close = function () {
+	MPPNotification.prototype.close = function () {
 		var self = this;
 		window.removeEventListener("resize", this.onresize);
 		this.domElement.fadeOut(500, function () {
@@ -1959,7 +1962,7 @@ $(function () {
 	if (localStorage && localStorage.knowsYouCanUseKeyboard) gKnowsYouCanUseKeyboard = true;
 	if (!gKnowsYouCanUseKeyboard) {
 		window.gKnowsYouCanUseKeyboardTimeout = setTimeout(function () {
-			window.gKnowsYouCanUseKeyboardNotification = new Notification({
+			window.gKnowsYouCanUseKeyboardNotification = new MPPNotification({
 				title: "Did you know!?!",
 				text: "You can play the piano with your keyboard, too.  Try it!", target: "#piano", duration: 10000
 			});
@@ -2076,7 +2079,7 @@ $(function () {
 		var room_name = "Room" + Math.floor(Math.random() * 1000000000000);
 		changeRoom(room_name, "right", { "visible": false, "chat": true, "crownsolo": false });
 		setTimeout(function () {
-			new Notification({
+			new MPPNotification({
 				id: "share", title: "Playing alone", html: 'You are playing alone in a room by yourself, but you can always invite \
 				friends by sending them the link.<br/><br/>\
 				<a href="#" onclick="window.open(\'https://www.facebook.com/sharer/sharer.php?u=\'+encodeURIComponent(location.href),\'facebook-share-dialog\',\'width=626,height=436\');return false;">Share on Facebook</a><br/><br/>\
@@ -2136,7 +2139,7 @@ $(function () {
 			closeModal();
 			changeRoom(name, "right", settings);
 			setTimeout(function () {
-				new Notification({
+				new MPPNotification({
 					id: "share", title: "Created a Room", html: 'You can invite friends to your room by sending them the link.<br/><br/>\
 				<a href="#" onclick="window.open(\'https://www.facebook.com/sharer/sharer.php?u=\'+encodeURIComponent(location.href),\'facebook-share-dialog\',\'width=626,height=436\');return false;">Share on Facebook</a><br/><br/>\
 				<a href="http://twitter.com/home?status='+ encodeURIComponent(location.href) + '" target="_blank">Tweet</a>', duration: 25000
@@ -2611,7 +2614,7 @@ $(function () {
 						h1.textContent = "Outputs";
 						div.appendChild(h1);
 						div.appendChild(outputs_ul);
-						connectionsNotification = new Notification({ "id": "MIDI-Connections", "title": "MIDI Connections", "duration": sticky ? "-1" : "4500", "html": div, "target": "#midi-btn" });
+						connectionsNotification = new MPPNotification({ "id": "MIDI-Connections", "title": "MIDI Connections", "duration": sticky ? "-1" : "4500", "html": div, "target": "#midi-btn" });
 					}
 
 					document.getElementById("midi-btn").addEventListener("click", function (evt) {
@@ -2694,7 +2697,151 @@ $(function () {
 		img.src = enc;
 	};
 
+	// sound selector
+	function SoundSelector(piano) {
+		this.btn_pos = {};
+		Object.defineProperties(this.btn_pos, {
+			bottom: {
+				configurable: true,
+				get: function () {
+					return $("#sound-btn").css("bottom") || "22px";
+				},
+				set: function (px) {
+					$("#sound-btn").css("bottom", px);
+				}
+			},
+			right: {
+				configurable: true,
+				get: function () {
+					return $("#sound-btn").css("right") || "250px";
+				},
+				set: function (px) {
+					$("#sound-btn").css("right", px);
+				}
+			}
+		});
+		this.initialized = false;
+		this.loadingPacks = {};
+		this.keys = piano.keys;
+		this.notification;
+		this.piano = piano;
+		this.selected = localStorage.selected || "MPP Default";
+		this.soundpacks = [];
+		this.addPack({ name: "MPP Default", keys: Object.keys(this.piano.keys), ext: ".wav.mp3", url: "/mpp2/sounds/default/" }, false, true);
+	}
 
+	SoundSelector.prototype.addPack = function (url, autoLoad, isObj) {
+		var self = this;
+		self.loadingPacks[url] = true;
+		if (!autoLoad) autoLoad = false;
+		if (!isObj) isObj = false;
+		function handleInfo(info, obj) {
+			if (obj != true) info.url = url;
+			if (self.soundpacks.indexOf(info) != -1) return;
+			info.html = document.createElement("li");
+			info.html.className = "pack";
+			info.html.innerText = info.name + " (" + info.keys.length + " keys)";
+			info.html.onclick = function () {
+				self.loadPack(info.name);
+				self.notification.close();
+				self.notification = undefined;
+			};
+			self.soundpacks.push(info);
+			delete self.loadingPacks[url];
+			self.soundpacks.sort(function (a, b) {
+				if (a.name < b.name) return -1;
+				if (a.name > b.name) return 1;
+				return 0;
+			});
+			if (autoLoad) self.loadPack(info.name);
+		}
+		if (!isObj) {
+			try {
+				$.get(url + "/info.json").done(handleInfo);
+			} catch (e) {
+				delete self.loadingPacks[url];
+			}
+		} else handleInfo(url, true);
+	};
+	SoundSelector.prototype.addPacks = function (arr) {
+		for (var i = 0; arr.length > i; i++) this.addPack(arr[i]);
+	};
+	SoundSelector.prototype.init = function () {
+		var self = this;
+		var loading = false;
+		for (var i in self.loadingPacks) {
+			if (self.loadingPacks[i] == true) {
+				loading = true;
+				break;
+			}
+		}
+		if (loading) return setTimeout(function () {
+			self.init();
+		}, 250);
+		if (self.initialized) return console.warn("Sound selector already initialized!");
+
+		$("body").append(`<div id="sound-btn" class="ugly-button sound-btn" style="position: fixed; bottom: ${self.btn_pos.bottom}; right: ${self.btn_pos.right}; width: 100px; z-index: 500;">Sound Select</div>`);
+		$("#sound-btn").on("click", function () {
+			if (document.getElementById("Notification-Sound-Selector") != null) return;
+			var html = document.createElement("ul");
+			$(html).append("<h1>Current Sound: " + self.selected + "</h1>");
+			for (var i = 0; self.soundpacks.length > i; i++) {
+				var pack = self.soundpacks[i];
+				if (pack.name == self.selected) pack.html.classList = "pack enabled";
+				else pack.html.classList = "pack";
+				html.appendChild(pack.html);
+			}
+			self.notification = new MPPNotification({ title: "Sound Selector:", html: html, id: "Sound-Selector", duration: -1, target: "#sound-btn" });//TODO:
+		});
+		self.loadPack(self.selected, true);
+		self.initialized = true;
+	};
+	SoundSelector.prototype.loadPack = function (name, forced) {
+		var pack;
+		if (name) pack = this.soundpacks.filter(function (x) {
+			return x.name == name;
+		})[0];
+		if (!pack) {
+			console.warn("Sound pack does not exist! Loading default pack...");
+			pack = this.soundpacks[0];
+		}
+		if (pack.name == this.selected && !forced) return console.warn("Sound pack already selected! To force it to load add true to the second argument.");
+		this.piano.keys = {};
+		for (var i = 0; pack.keys.length > i; i++) this.piano.keys[pack.keys[i]] = this.keys[pack.keys[i]]
+		this.piano.renderer.resize();
+		var self = this;
+		for (var i in this.piano.keys) {
+			if (!this.piano.keys.hasOwnProperty(i)) continue;
+			(function () {
+				var key = self.piano.keys[i];
+				key.loaded = false;
+				self.piano.audio.load(key.note, pack.url + key.note + pack.ext, function () {
+					key.loaded = true;
+					key.timeLoaded = Date.now();
+				});
+			})();
+		}
+		localStorage.selected = name;
+		this.selected = name;
+	};
+	SoundSelector.prototype.removePack = function (name) {
+		var found = false;
+		for (var i = 0; this.soundpacks.length > i; i++) {
+			var pack = this.soundpacks[i];
+			if (pack.name == name) {
+				this.soundpacks.splice(i, 1);
+				if (pack.name == this.selected) this.loadPack("MPP Default");
+				found = true;
+				break;
+			}
+		}
+		if (!found) console.warn("Sound pack not found!");
+	};
+
+	window.selector = new SoundSelector(gPiano);
+	//selector.addPacks(["https://ledlamp.github.io/electrashave-sound-selector/Sounds/Emotional/", /*"https://ledlamp.github.io/electrashave-sound-selector/Sounds/HardPiano/", */"https://ledlamp.github.io/electrashave-sound-selector/Sounds/Harp/", "https://ledlamp.github.io/electrashave-sound-selector/Sounds/Music_Box/", /*"https://ledlamp.github.io/electrashave-sound-selector/Sounds/NewPiano/", "https://ledlamp.github.io/electrashave-sound-selector/Sounds/PianoSounds/", */"https://ledlamp.github.io/electrashave-sound-selector/Sounds/Rhodes_MK1/", /*"https://ledlamp.github.io/electrashave-sound-selector/Sounds/SoftPiano/", */"https://ledlamp.github.io/electrashave-sound-selector/Sounds/Vintage_Upright/", "https://ledlamp.github.io/electrashave-sound-selector/Sounds/Steinway_Grand/", "https://ledlamp.github.io/electrashave-sound-selector/Sounds/SweetTiddies/", "https://ledlamp.github.io/electrashave-sound-selector/Sounds/Untitled/"]);
+	selector.addPacks(["/mpp2/sounds/Emotional/","/mpp2/sounds/Emotional_2.0/","/mpp2/sounds/GreatAndSoftPiano/","/mpp2/sounds/HardAndToughPiano/","/mpp2/sounds/HardPiano/","/mpp2/sounds/Harp/","/mpp2/sounds/Harpsicord/","/mpp2/sounds/LoudAndProudPiano/","/mpp2/sounds/MLG/","/mpp2/sounds/Music_Box/","/mpp2/sounds/NewPiano/","/mpp2/sounds/Orchestra/","/mpp2/sounds/Piano2/","/mpp2/sounds/PianoSounds/","/mpp2/sounds/Rhodes_MK1/","/mpp2/sounds/SoftPiano/","/mpp2/sounds/Steinway_Grand/","/mpp2/sounds/Untitled/","/mpp2/sounds/Vintage_Upright/","/mpp2/sounds/Vintage_Upright_Soft/"]);
+	selector.init();
 
 
 
@@ -2746,7 +2893,7 @@ $(function () {
 				recording = true;
 				button.textContent = "Stop Recording";
 				button.classList.add("stuck");
-				new Notification({ "id": "mp3", "title": "Recording MP3...", "html": "It's recording now.  This could make things slow, maybe.  Maybe give it a moment to settle before playing.<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 10000 });
+				new MPPNotification({ "id": "mp3", "title": "Recording MP3...", "html": "It's recording now.  This could make things slow, maybe.  Maybe give it a moment to settle before playing.<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 10000 });
 			} else {
 				// stop recording
 				var mp3buf = encoder.flush();
@@ -2759,7 +2906,7 @@ $(function () {
 				recording = false;
 				button.textContent = "Record MP3";
 				button.classList.remove("stuck");
-				new Notification({ "id": "mp3", "title": "MP3 recording finished", "html": "<a href=\"" + url + "\" target=\"blank\">And here it is!</a> (open or save as)<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 0 });
+				new MPPNotification({ "id": "mp3", "title": "MP3 recording finished", "html": "<a href=\"" + url + "\" target=\"blank\">And here it is!</a> (open or save as)<br><br>This feature is experimental.<br>Send complaints to <a href=\"mailto:multiplayerpiano.com@gmail.com\">multiplayerpiano.com@gmail.com</a>.", "duration": 0 });
 			}
 		});
 		function onAudioProcess(evt) {
@@ -2935,7 +3082,7 @@ $(function () {
 
 
 			// notification
-			notification = new Notification({ title: "Synthesize", html: html, duration: -1, target: "#synth-btn" });
+			notification = new MPPNotification({ title: "Synthesize", html: html, duration: -1, target: "#synth-btn" });
 			notification.on("close", function () {
 				var tip = document.getElementById("tooltip");
 				if (tip) tip.parentNode.removeChild(tip);

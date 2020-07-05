@@ -38,7 +38,7 @@ body {
     /* IE10+ */
     background: radial-gradient(ellipse at center, #ecfafd 0%, #c5d5d8 100%);
     /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ecfafd', endColorstr='#c5d5d8', GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ecfafd', endColorstr='#c5d5d8', GradientType=1);
     /* IE6-9 fallback on horizontal gradient */
     -webkit-transition: background 1000ms linear;
 }
@@ -1039,10 +1039,39 @@ table {
     -ms-animation: spin 1s linear infinite;
 }
 
+.notification .pack {
+    padding: 0px;
+    margin: 2px;
+    background: #fdd;
+    border: 1px solid #f84;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.notification .pack.enabled {
+    background: #dfd;
+    cursor: not-allowed;
+}
+
+.notification .pack:after {
+    content: "";
+    font-size: 10px;
+    color: #a44;
+    float: right;
+}
+
+.notification .pack.enabled:after {
+    content: "Selected";
+    font-size: 10px;
+    color: #4a4;
+    float: right;
+}
+
 @-webkit-keyframes spin {
     0% {
         -webkit-transform: rotate(0deg);
     }
+
     100% {
         -webkit-transform: rotate(360deg);
     }
@@ -1052,6 +1081,7 @@ table {
     0% {
         -moz-transform: rotate(0deg);
     }
+
     100% {
         -moz-transform: rotate(360deg);
     }
@@ -1061,6 +1091,7 @@ table {
     0% {
         -o-transform: rotate(0deg);
     }
+
     100% {
         -o-transform: rotate(360deg);
     }
@@ -1070,6 +1101,7 @@ table {
     0% {
         -ms-transform: rotate(0deg);
     }
+
     100% {
         -ms-transform: rotate(360deg);
     }
