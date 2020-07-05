@@ -83,7 +83,7 @@ Client.prototype.connect = function() {
 	}
 	var self = this;
 	this.ws.addEventListener("close", function(evt) {
-		console.log(`connection attempt ${ms}`)
+		//console.log(`connection attempt ${ms}`)
 		self.user = undefined;
 		self.participantId = undefined;
 		self.channel = undefined;
@@ -129,7 +129,7 @@ Client.prototype.connect = function() {
 		}, 200);
 
 
-		console.log(`add events`)
+		//console.log(`add events`)
 		self.emit("connect");
 		self.emit("status", "Joining channel...");
 	});
