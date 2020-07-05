@@ -1096,10 +1096,15 @@ $(function () {
 	////////////////////////////////////////////////////////////////
 
 	var channel_id = decodeURIComponent(window.location.pathname);
-	var tchannel_id;
-	if (channel_id.substr(0, 6) == "/mpp2/") tchannel_id = channel_id.substr(6);
-	if (channel_id.substr(0, 14) == "/mpp2/index.html") tchannel_id = channel_id.substr(14);
-	if (tchannel_id == "") channel_id = "lobby";
+	if (channel_id.substr(0, 6) == "/mpp2/") channel_id = channel_id.substr(6);
+	if (decodeURIComponent(window.location.pathname).substr(0, 16) == "/mpp2/index.html") {
+		window.location.href = `/mpp2/${window.location.search}`;
+		return;
+		//parameters = location.search.substring(1).split("&")
+	}
+	if (window.location.search.startsWith("?")) channel_id = /[^\?]\w+/g.exec(window.location.search)[0];
+	console.log(channel_id)
+	if (channel_id == "") channel_id = "lobby";
 
 	var wssport = window.location.hostname == "www.multiplayerpiano.com" ? 443 : 8080;
 	var gClient = new Client('ws://headless-mbp.gq:2269');//new Client("ws://" + window.location.hostname + ":" + wssport);
@@ -2169,7 +2174,7 @@ $(function () {
 		if (name == "") name = "lobby";
 		if (gClient.channel && gClient.channel._id === name) return;
 		if (push) {
-			var url = "/mpp2/" + encodeURIComponent(name).replace("'", "%27");
+			var url = "/mpp2/?" + encodeURIComponent(name).replace("'", "%27");
 			if (window.history && history.pushState) {
 				history.pushState({ "depth": gHistoryDepth += 1, "name": name }, "Piano > " + name, url);
 			} else {
@@ -2204,8 +2209,8 @@ $(function () {
 		var name = decodeURIComponent(window.location.pathname);
 		var tname;
 		if (name.substr(0, 1) == "/") tname = name.substr(1);
-		if (name.substr(0, 6) == "/mpp2/") tname = name.substr(6);
-		if (name.substr(0, 14) == "/mpp2/index.html") tname = name.substr(14);
+		if (name.substr(0, 5) == "/mpp2") tname = name.substr(6);
+		if (name.substr(0, 16) == "/mpp2/index.html") tname = name.substr(16);
 		changeRoom(name, direction, null, false);
 	});
 
