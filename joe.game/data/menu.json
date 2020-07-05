@@ -1,8 +1,8 @@
 {
     "background": {
         "key": "back0",
-        "x": 480,
-        "y": 300
+        "x": 0,
+        "y": 0
     },
     "buttons": [
         {
