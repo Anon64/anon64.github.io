@@ -1121,7 +1121,7 @@ $(function () {
 				$("#status").html('<span class="number">' + count + '</span> ' + (count == 1 ? 'person is' : 'people are') + ' playing');
 				document.title = "Piano (" + count + ")";
 			} else {
-				document.title = "Multiplayer Piano";
+				document.title = "Multiplayer Piano 2";
 			}
 		});
 	})();
@@ -2674,7 +2674,7 @@ $(function () {
 		// too many failing extensions injected in my html
 		if (url.indexOf(".js") !== url.length - 3) return;
 		// extensions inject cross-domain embeds too
-		if (url.toLowerCase().indexOf("multiplayerpiano.com") == -1) return;
+		//if (url.toLowerCase().indexOf("multiplayerpiano.com") == -1) return;
 
 		// errors in my code
 		if (url.indexOf("script.js") !== -1) {
