@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta property="og:title" content="WXM32">
-        <meta property="og:description" content="List of alerts from WXM32">
-        <meta property="og:image" content="https://anon64.github.io/wxm32/noaa.png">
-        <meta property="theme-color" content="#263F78">
-        <meta property="og:site_name" content="Anon64">
-        <title>WXM32</title>
-        <link rel='icon' type='image/x-icon' href='/wxm32/favicon.ico'>
-        <link rel='stylesheet' type='text/css' href='/main.css'>
-    </head>
-    <body>
 
-    </body>
+<head>
+    <meta property="og:title" content="WXM32">
+    <meta property="og:description" content="List of alerts from WXM32">
+    <meta property="og:image" content="https://anon64.github.io/wxm32/noaa.png">
+    <meta property="theme-color" content="#263F78">
+    <meta property="og:site_name" content="Anon64">
+    <title>WXM32</title>
+    <link rel='icon' type='image/x-icon' href='/wxm32/favicon.ico'>
+    <link rel='stylesheet' type='text/css' href='/wxm32/css/main.css'>
+    <script src='/wxm32/js/loader.js'></script>
+</head>
+
+<body onload='onLoad()'>
+    <div class='topbar'>
+        <h1 class='ndmbgold' style="margin: 0;">WXM32</h1>
+        <input type='button' value='↻' onclick='loadList()' class='btn'>
+        <select name='amount' id='amount' onchange="loadList();" onfocus="this.selectedIndex = -1;">
+            <option>20</option>
+            <option>30</option>
+            <option>40</option>
+            <option>50</option>
+            <option>75</option>
+            <option>100</option>
+        </select>
+    </div>
+    <div class='main'>
+        <table id='maintable' border='1'>
+            <col width="10px" />
+            <col width="30px" />
+            <col width="100%" />
+            <tr>
+                <td>Date</td>
+                <td>Broadcaster</td>
+                <td>Message</td>
+            </tr>
+        </table>
+    </div>
+</body>
+
 </html>
