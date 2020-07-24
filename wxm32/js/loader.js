@@ -2,7 +2,7 @@ let list;
 
 function onLoad() {
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "http://sethcam.ml:6969/alerts");
+    xmlhttp.open('GET', "https://sethcam.ml/wserver/alerts");
     xmlhttp.send();
     xmlhttp.onload = () => {
         list = JSON.parse(xmlhttp.responseText || "{\"alerts\":[]}");
