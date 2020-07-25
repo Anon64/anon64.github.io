@@ -6,7 +6,7 @@ function onLoad() {
     xmlhttp.send();
     xmlhttp.onload = () => {
         list = JSON.parse(xmlhttp.responseText || "{\"alerts\":[]}");
-        list = list.alerts;
+        list = list.alerts.sort((a, b)=> b.date - a.date);
         loadList();
     }
 }
