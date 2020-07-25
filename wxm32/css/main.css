@@ -7,8 +7,12 @@ body {
     font-weight: bold;
 }
 
-td, tr {
+tr:nth-of-type(even) {
     color: white;
+}
+
+tr:nth-of-type(odd) {
+    color: #FFD700;
 }
 
 .ndmbgold {
