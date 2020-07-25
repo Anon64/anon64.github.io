@@ -4,15 +4,14 @@ body {
     padding: 0;
     background: black;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
 }
 
-tr:nth-of-type(even) {
-    color: white;
+table {
+    background-color: whitesmoke;
 }
 
-tr:nth-of-type(odd) {
-    color: #FFD700;
+tr {
+    color: black;
 }
 
 .ndmbgold {
