@@ -1,14 +1,30 @@
 let list;
 
-function onLoad() {
+const retry_interval = [100, 600, 1400, 6000, 10000];
+let retry_count = 0;
+
+function getList() {
+    document.getElementById('wxm').innerHTML = "WXM32 - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', "https://sethcam.ml/wserver/alerts");
     xmlhttp.send();
     xmlhttp.onload = () => {
         list = JSON.parse(xmlhttp.responseText || "{\"alerts\":[]}");
         list = list.alerts.sort((a, b) => b.date - a.date);
+        document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
+        retry_count = 0;
         loadList();
     }
+    xmlhttp.onerror = () => {
+        document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${retry_count == 1 ? 'y' : 'ies'})</span>`;
+        setTimeout(function () {
+            if (retry_count > !20) getList();
+        }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
+    }
+}
+
+function onLoad() {
+    getList();
 }
 
 const event_levels = {
@@ -117,7 +133,7 @@ function getECol(e) {
         case 'WCH':
             return '#FFFF90';
         case 'TEST':
-            return '#FEFEFE';
+            return '#9090FF';
         default:
             return '#696969';
     }
@@ -140,9 +156,9 @@ async function loadList() {
         let date = new Date(alert.date);
         let row = table.insertRow(-1);
         row.insertCell(0).innerText = date.toLocaleString('en-GB').replace(',', '');
-        row.insertCell(1).innerText = alert.ori;
+        row.insertCell(1).innerHTML = `<span style='text-align: center;'>${alert.org}</span><br><span style='font-size: 8pt;text-align: center;'>${alert.orf}</span>`;
         let event = row.insertCell(2);
-        event.innerHTML = `<span style='text-align: center; color: black;'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;'>${alert.evn}</span>`;
+        event.innerHTML = `<span style='text-align: center;'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;'>${alert.evn}</span>`;
         event.style['background-color'] = getECol(alert.typ);
         //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
         row.insertCell(3).innerText = alert.msg;
