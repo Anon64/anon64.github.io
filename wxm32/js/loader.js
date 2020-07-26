@@ -128,19 +128,19 @@ function getLevel(e) {
     return l[e] ? l[e] : l[e.slice(-1)] ? l[e.slice(-1)] : undefined;
 }
 
-function getECol(e) {
+function gc(e) {
     const t = getLevel(e);
     switch (t) {
         case 'WRN':
-            return '#FF9090';
+            return 'warning';
         case 'ADV':
-            return '#90FF90';
+            return 'advisory';
         case 'WCH':
-            return '#FFFF90';
+            return 'watch';
         case 'TEST':
-            return '#9090FF';
+            return 'test';
         default:
-            return '#696969';
+            return 'unknown';
     }
 }
 
@@ -259,8 +259,29 @@ async function loadList() {
         row.insertCell(1).innerHTML = `<p>${alert.org}<br><span style='font-size: 8pt;'>${alert.orf}</span></p>`;
         let event = row.insertCell(2);
         event.innerHTML = `<p>${alert.typ}<br><span style='font-size: 8pt;'>${alert.evn}</span></p>`;
-        event.style['background-color'] = getECol(alert.typ);
+        event.className = gc(alert.typ);
         //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
-        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.msg.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span style='background-color: ${getECol(alert.typ)};'>$&</span>`)}</p>`;
+        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.msg.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.typ)}'>$&</span>`)}</p>`;
+    }
+}
+
+function switchcol() {
+    document.getElementById('maintable').classList.toggle('dark-mode');
+
+    let warnings = document.getElementsByClassName('warning');
+    for (warning of warnings) {
+        warning.classList.toggle('warning-dark');
+    }
+    let watches = document.getElementsByClassName('watch');
+    for (watch of watches) {
+        watch.classList.toggle('watch-dark');
+    }
+    let advisories = document.getElementsByClassName('advisory');
+    for (advisory of advisories) {
+        advisory.classList.toggle('advisory-dark');
+    }
+    let tests = document.getElementsByClassName('test');
+    for (test of tests) {
+        test.classList.toggle('test-dark');
     }
 }

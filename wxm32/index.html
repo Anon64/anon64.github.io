@@ -15,8 +15,8 @@
 
 <body onload='onLoad()'>
     <div class='topbar'>
-        <h1 class='ndmbgold' id = 'wxm' style="margin: 0;">WXM32</h1>
-        <input type='button' value='↻' onclick='loadList()' class='btn'>
+        <h1 class='ndmbgold' id='wxm' style="margin: 0;">WXM32</h1>
+        <input type='button' value='↻' onclick='loadList()'>
         <select name='amount' id='amount' onchange="loadList();" onfocus="this.selectedIndex = -1;">
             <option>20</option>
             <option>30</option>
@@ -25,13 +25,16 @@
             <option>75</option>
             <option>100</option>
         </select>
+        <input type='button' value='Switch Table Colors' onclick='switchcol()'>
     </div>
     <div class='main'>
-        <table id='maintable' border='1' cellpadding="5px" cellspacing="0" style="border: 1px solid white; border-collapse:collapse;">
-            <col width="6%"/>
-            <col/>
-            <col/>
-            <col width="94%" />
+        <table id='maintable' border='1' cellpadding="5px" cellspacing="0">
+            <colgroup>
+                <col width="6%" />
+                <col />
+                <col />
+                <col width="94%" />
+            </colgroup>
             <tr>
                 <td>Date</td>
                 <td>Broadcaster</td>

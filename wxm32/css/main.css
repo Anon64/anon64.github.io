@@ -1,3 +1,4 @@
+
 html,
 body {
     height: 100%;
@@ -8,10 +9,50 @@ body {
 
 table {
     background-color: #FFFFFF;
+    border: 1px solid black; 
+    border-collapse:collapse;
 }
 
-tr {
-    color: black;
+.dark-mode {
+    background-color: #090909;
+    color: white;
+    border: 1px solid white; 
+}
+
+.warning {
+    background-color: #FF9090;
+}
+
+.warning-dark {
+    background-color: #760000;
+}
+
+.watch {
+    background-color: #FFFF90;
+}
+
+.watch-dark {
+    background-color: #766F00;
+}
+
+.advisory {
+    background-color: #90FF90;
+}
+
+.advisory-dark {
+    background-color: #076F00;
+}
+
+.test {
+    background-color: #9090FF;
+}
+
+.test-dark {
+    background-color: #07006F;
+}
+
+.unknown {
+    background-color: #696969;
 }
 
 .ndmbgold {
@@ -21,11 +62,11 @@ tr {
 .topbar {
     background-color: #0a0a0a;
     overflow: hidden;
-    position: fixed; /* Set the navbar to fixed position */
-    top: 0; /* Position the navbar at the top of the page */
-    width: 100%; /* Full width */
+    position: fixed;
+    top: 0;
+    width: 100%;
   }
 
 .main {
-    margin-top: 80px; /* Add a top margin to avoid content overlay */
+    margin-top: 80px;
 }
