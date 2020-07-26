@@ -247,8 +247,7 @@ async function loadList() {
             month: '2-digit',
             day: '2-digit',
             hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+            minute: '2-digit'
         }).format(date);
 
         row.insertCell(0).innerHTML = `<p style='font-size: 12pt;'>${fdate.replace(',', '<br>')}</p>`;
