@@ -139,6 +139,93 @@ function getECol(e) {
     }
 }
 
+const alert_types = {
+    'Administrative Message': 'ADR',
+    'Avalanche Watch': 'AVA',
+    'Avalanche Warning': 'AVW',
+    'Biological Hazard Warning': 'BHW',
+    'Boil Water Warning': 'BWW',
+    'Blizzard Warning': 'BZW',
+    'Coastal Flood Watch': 'CFA',
+    'Coastal Flood Warning': 'CFW',
+    'Child Abduction Emergency': 'CAE',
+    'Civil Danger Warning': 'CDW',
+    'Civil Emergency Message': 'CEM',
+    'Chemical Hazard Warning': 'CHW',
+    'Contaminated Water Warning': 'CWW',
+    'Dust Storm Warning': 'DSW',
+    'Flash Flood Watch': 'FFA',
+    'Flash Flood Warning': 'FFW',
+    'Flash Flood Statement': 'FFS',
+    'Flood Watch': 'FLA',
+    'Flood Warning': 'FLW',
+    'Flood Statement': 'FLS',
+    'High Wind Watch': 'HWA',
+    'High Wind Warning': 'HWW',
+    'Hurricane Watch': 'HUA',
+    'Hurricane Warning': 'HUW',
+    'Hurricane Statement': 'HLS',
+    'Severe Thunderstorm Watch': 'SVA',
+    'Severe Thunderstorm Warning': 'SVR',
+    'Severe Weather Statement': 'SVS',
+    'Special Marine Warning': 'SMW',
+    'Special Weather Statement': 'SPS',
+    'Tornado Watch': 'TOA',
+    'Tornado Warning': 'TOR',
+    'Tropical Storm Watch': 'TRA',
+    'Tropical Storm Warning': 'TRW',
+    'Tsunami Watch': 'TSA',
+    'Tsunami Warning': 'TSW',
+    'Winter Storm Watch': 'WSA',
+    'Winter Storm Warning': 'WSW',
+    'Emergency Action Notification': 'EAN',
+    'Emergengy Action Termination': 'EAT',
+    'National Information Center': 'NIC',
+    'National Periodic Test': 'NPT',
+    'National Audible Test': 'NAT',
+    'National Silent Test': 'NST',
+    'Required Monthly Test': 'RMT',
+    'Required Weekly Test': 'RWT',
+    'Earthquake Warning': 'EQW',
+    'Evacuation Immediate': 'EVI',
+    'Fire Warning': 'FRW',
+    'Hazardous Materials Warning': 'HMW',
+    'Law Enforcement Warning': 'LEW',
+    'Local Area Emergency': 'LAE',
+    '911 Outage Emergency': 'TOE',
+    'Nuclear Plant Warning': 'NUW',
+    'Radiological Hazard Warning': 'RHW',
+    'Shelter in Place Warning': 'SPW',
+    'Volcano Warning': 'VOW',
+    'Network Message Notification': 'NMN',
+    'Demonstration Message': 'DMO',
+    'Extreme Wind Warning': 'EWW',
+    'Storm Surge Watch': 'SSA',
+    'Storm Surge Warning': 'SSW',
+    'Flash Freeze Warning': 'FSW',
+    'Freeze Warning': 'FZW',
+    'Hurricane Local Statement': 'HLS',
+    'Special Marine Warning': 'SMW',
+    'Dam Watch': 'DBA',
+    'Dam Break Warning': 'DBW',
+    'Contagious Disease Warning': 'DEW',
+    'Evacuation Watch': 'EVA',
+    'Food Contamination Warning': 'FCW',
+    'Iceberg Warning': 'IBW',
+    'Industrial Fire Warning': 'IFW',
+    'Land Slide Warning': 'LSW',
+    'Power Outage Statement': 'POS',
+    'Wild Fire Watch': 'WFA',
+    'Wild Fire Warning': 'WFW',
+    //internal codes (for compatability i guess
+    'Transmitter Backup On': 'TXB',
+    'Transmitter Carrier Off': 'TXF',
+    'Transmitter Carrier On': 'TXO',
+    'Transmitter Primary On': 'TXP',
+}
+
+const alert_list = Object.keys(alert_types);
+
 async function loadList() {
     let table = document.getElementById('maintable');
 
@@ -155,12 +242,21 @@ async function loadList() {
         if (i > length) return;
         let date = new Date(alert.date);
         let row = table.insertRow(-1);
-        row.insertCell(0).innerText = date.toLocaleString('en-GB').replace(',', '');
-        row.insertCell(1).innerHTML = `<span style='text-align: center;'>${alert.org}</span><br><span style='font-size: 8pt;text-align: center;'>${alert.orf}</span>`;
+        let fdate = Intl.DateTimeFormat('en-US', {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }).format(date);
+
+        row.insertCell(0).innerHTML = `<p style='font-size: 12pt;'>${fdate.replace(',', '<br>')}</p>`;
+        row.insertCell(1).innerHTML = `<p>${alert.org}<br><span style='font-size: 8pt;'>${alert.orf}</span></p>`;
         let event = row.insertCell(2);
-        event.innerHTML = `<span style='text-align: center;'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;'>${alert.evn}</span>`;
+        event.innerHTML = `<p>${alert.typ}<br><span style='font-size: 8pt;'>${alert.evn}</span></p>`;
         event.style['background-color'] = getECol(alert.typ);
         //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
-        row.insertCell(3).innerText = alert.msg;
+        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.msg.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span style='background-color: ${getECol(alert.typ)};'>$&</span>`)}</p>`;
     }
 }
