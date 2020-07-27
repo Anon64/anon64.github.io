@@ -34,7 +34,7 @@ function onLoad() {
 
 function bettersort(q) {
     return function (a, b) {
-        return a[1].indexOf(q) - b[1].indexOf(q);
+        return a[1].toLowerCase().indexOf(q) - b[1].toLowerCase().indexOf(q);
     }
 }
 
@@ -43,7 +43,11 @@ function searchlist(q = '') {
     for ([id, name] of list.entries()) {
         out.push([id, name]);
     }
-    return out.filter(n => (n[1].toLowerCase().includes(q) && !!n)).sort(bettersort(q));
+    return out.filter(n => (n[1].toLowerCase().includes(q) && !!n)).sort(bettersort(q)).sort(function (a, b) {
+        let na = a[1].toLowerCase();
+        let nb = b[1].toLowerCase();
+        return na.indexOf(q) == nb.indexOf(q) ? (na.indexOf(q) + na.length) - (nb.indexOf(q) + nb.length) : 0;
+    });
 }
 
 let busy = false;
@@ -78,7 +82,8 @@ async function loadList() {
     for (let [id, name] of songlist) {
         let row = table.insertRow(-1);
         row.insertCell(0).innerHTML = search ? id : id + index;
-        row.insertCell(1).innerHTML = name;
+        let nn = name.replace(new RegExp(search, 'i'), `<span style='background-color: #FFD700; color: black;'>$&</span>`).replace(new RegExp('[\\x00\\x08\\x0B\\x0C\\x0E-\\x1F\x7F-\x9F]', 'g'), ' ').slice(0, 250);
+        row.insertCell(1).innerHTML = `${nn}${nn.length > 250 ? '...' : ''}`;
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length - 1} track(s) of ${list.length}.`;
         let newtime = (1000 - summatory1) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
         summatory1 += newtime;
