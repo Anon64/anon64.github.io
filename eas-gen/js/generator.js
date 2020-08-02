@@ -7964,6 +7964,7 @@ function addLoc() {
     for (let loc of locations) {
         let row = table.insertRow(-1);
         row.setAttribute('onclick', 'removeClicked(this);');
+        row.style = 'cursor: pointer;'
 
         row.insertCell(0).innerText = `${((window.SAME_LOC[loc.slice(0, 1)] == 'None' ? '' : window.SAME_LOC[loc.slice(0, 1)]) + ' ' + window[`SSCCC_${country}`][loc.slice(1, 6)]).trim() + ((loc.slice(1, 6) != '00000' || loc.slice(3, 6) != '000') ? `, ${window[`${country}_AREA`][loc.slice(1, 3)]}` : '')}`;
         row.insertCell(1).innerText = loc;
