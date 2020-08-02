@@ -1,0 +1,33 @@
+html,
+body {
+    height: 100%;
+    background: black;
+}
+
+* {
+    margin: 0px;
+    padding: 0;
+}
+
+div input {
+    cursor: pointer;
+}
+
+p,
+label,
+table,
+h1 {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+table {
+    background-color: black;
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+
+.ndmbgold {
+    color: #FFD700;
+}
