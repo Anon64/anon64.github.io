@@ -82,7 +82,7 @@ async function loadList() {
     for (let [id, name] of songlist) {
         let row = table.insertRow(-1);
         row.insertCell(0).innerHTML = search ? id : id + index;
-        let nn = name.replace(new RegExp(search, 'i'), `<span style='background-color: #FFD700; color: black;'>$&</span>`).replace(new RegExp('[\\x00\\x08\\x0B\\x0C\\x0E-\\x1F\x7F-\x9F]', 'g'), ' ').slice(0, 250);
+        let nn = name.replace(new RegExp(search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&'), 'i'), `<span style='background-color: #FFD700; color: black;'>$&</span>`).replace(new RegExp('[\\x00\\x08\\x0B\\x0C\\x0E-\\x1F\x7F-\x9F]', 'g'), ' ').slice(0, 250);
         row.insertCell(1).innerHTML = `${nn}${nn.length > 250 ? '...' : ''}`;
         document.getElementById('tracknum').innerHTML = `Showing ${table.rows.length - 1} track(s) of ${list.length}.`;
         let newtime = (1000 - summatory1) / ((1.05 - Math.pow(1.05, -(Math.min(listlength, 100) - 1))) / (1.05 - 1));
