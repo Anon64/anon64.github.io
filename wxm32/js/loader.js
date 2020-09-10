@@ -21,7 +21,7 @@ function getList() {
         loadList();
     }
     xmlhttp.onerror = () => {
-        document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${retry_count == 1 ? 'y' : 'ies'})</span>`;
+        document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
         setTimeout(function () {
             if (retry_count < 20) getList();
         }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
