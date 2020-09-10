@@ -15,7 +15,7 @@ function loadStatus() {
         } catch (e) {
 
         }
-        console.log(status)
+        //console.log(status)
         let meta = JSON.parse(status.icestats.source.title);
         document.getElementById('nowplaying').innerText = `Now Playing: ${meta.artist} - ${meta.title}`;
     }
