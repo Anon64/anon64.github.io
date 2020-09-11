@@ -12,16 +12,16 @@ function getList() {
         try {
             list = JSON.parse(xmlhttp.responseText || "{\"alerts\":[]}");
         } catch (e) {
-            document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
+            document.getElementById('wxm').innerHTML = `WXM32/107.3FM - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
             return;
         }
         list = list.alerts.sort((a, b) => b.date - a.date);
-        document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
+        document.getElementById('wxm').innerHTML = `WXM32/107.3FM - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
         retry_count = 0;
         loadList();
     }
     xmlhttp.onerror = () => {
-        document.getElementById('wxm').innerHTML = `WXM32 - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
+        document.getElementById('wxm').innerHTML = `WXM32/107.3FM - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
         setTimeout(function () {
             if (retry_count < 20) getList();
         }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
