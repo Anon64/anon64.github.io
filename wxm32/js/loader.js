@@ -4,7 +4,7 @@ const retry_interval = [100, 600, 1400, 6000, 10000];
 let retry_count = 0;
 
 function getList() {
-    document.getElementById('wxm').innerHTML = "WXM32 - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
+    document.getElementById('wxm').innerHTML = "WXM32/107.3FM - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
     let xmlhttp = new XMLHttpRequest();
     xmlhttp.open('GET', "https://sethcam.ml/wserver/alerts");
     xmlhttp.send();
@@ -222,7 +222,7 @@ const alert_types = {
     'Power Outage Statement': 'POS',
     'Wild Fire Watch': 'WFA',
     'Wild Fire Warning': 'WFW',
-    //internal codes (for compatability i guess
+    //internal codes (for compatability i guess)
     'Transmitter Backup On': 'TXB',
     'Transmitter Carrier Off': 'TXF',
     'Transmitter Carrier On': 'TXO',
