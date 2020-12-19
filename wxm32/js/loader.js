@@ -4,24 +4,24 @@ const retry_interval = [100, 600, 1400, 6000, 10000];
 let retry_count = 0;
 
 function getList() {
-    document.getElementById('wxm').innerHTML = "WXM32/107.3FM - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
+    document.getElementById('wxm').innerHTML = "WXM32/107.3FM/98.3FM - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "https://sethcam.ml/wserver/alerts");
+    xmlhttp.open('GET', "http://bitkit-contabo.ga:6969/alerts");
     xmlhttp.send();
     xmlhttp.onload = () => {
         try {
             list = JSON.parse(xmlhttp.responseText || "{\"alerts\":[]}");
         } catch (e) {
-            document.getElementById('wxm').innerHTML = `WXM32/107.3FM - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
+            document.getElementById('wxm').innerHTML = `WXM32/107.3FM/98.3FM - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
             return;
         }
         list = list.alerts.sort((a, b) => b.date - a.date);
-        document.getElementById('wxm').innerHTML = `WXM32/107.3FM - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
+        document.getElementById('wxm').innerHTML = `WXM32/107.3FM/98.3FM - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
         retry_count = 0;
         loadList();
     }
     xmlhttp.onerror = () => {
-        document.getElementById('wxm').innerHTML = `WXM32/107.3FM - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
+        document.getElementById('wxm').innerHTML = `WXM32/107.3FM/98.3FM - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
         setTimeout(function () {
             if (retry_count < 20) getList();
         }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
@@ -244,7 +244,7 @@ async function loadList() {
     }
 
     for (let [i, alert] of list.entries()) {
-        if (i > length) return;
+        if (i > length+1) return; //what
         let date = new Date(alert.date);
         let row = table.insertRow(-1);
         let fdate = Intl.DateTimeFormat('en-US', {
