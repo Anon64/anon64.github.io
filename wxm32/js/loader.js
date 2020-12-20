@@ -6,7 +6,7 @@ let retry_count = 0;
 function getList() {
     document.getElementById('wxm').innerHTML = "WXM32/107.3FM/98.3FM - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "http://bitkit-contabo.ga:6969/alerts");
+    xmlhttp.open('GET', "https://bitkit-contabo.ga/wserver/alerts");
     xmlhttp.send();
     xmlhttp.onload = () => {
         try {
