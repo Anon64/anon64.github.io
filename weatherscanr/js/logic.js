@@ -7,7 +7,7 @@ function onLoad() {
 
 function loadStatus() {
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "https://sethcam.ml/anon64/ice/status-json.xsl");
+    xmlhttp.open('GET', "https://bitkit-contabo.ga/anon64/ice/status-json.xsl");
     xmlhttp.send();
     xmlhttp.onload = () => {
         try {
