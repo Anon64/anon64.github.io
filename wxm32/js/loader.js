@@ -3,10 +3,12 @@ let list;
 const retry_interval = [100, 600, 1400, 6000, 10000];
 let retry_count = 0;
 
+//i should rewrite some day
+
 function getList() {
     document.getElementById('wxm').innerHTML = "WXM32/107.3FM/98.3FM - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "https://bitkit-contabo.ga/wserver/alerts");
+    xmlhttp.open('GET', "https://anon64.owo69.me/alerts"); //dont mind the name
     xmlhttp.send();
     xmlhttp.onload = () => {
         try {
