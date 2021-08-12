@@ -265,7 +265,7 @@ async function loadList() {
         event.innerHTML = `<p>${alert.typ}<br><span style='font-size: 8pt;'>${alert.evn}</span></p>`;
         event.className = gc(alert.typ);
         //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
-        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.msg.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.typ)}'>$&</span>`)}</p>`;
+        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.msg.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.typ,dark)}'>$&</span>`)}</p>`;
     }
     if (dark) sa();
 }
