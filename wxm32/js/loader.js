@@ -136,14 +136,19 @@ function gc(e, d = false) {
     switch (t) {
         case 'WRN':
             out = 'warning';
+            break;
         case 'ADV':
             out = 'advisory';
+            break;
         case 'WCH':
             out = 'watch';
+            break;
         case 'TEST':
             out = 'test';
+            break;
         default:
             out = 'unknown';
+            break;
     }
    return out + (d && out != 'unknown' ? '-dark' : '');
 }
