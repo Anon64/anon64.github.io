@@ -8,7 +8,7 @@ let retry_count = 0;
 function getList() {
     document.getElementById('wxm').innerHTML = "WXM32 & WCGQ-FM (107.3) - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
     let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "https://anon64.owo69.me/alerts"); //dont mind the name
+    xmlhttp.open('GET', "https://anon64.fookat.haus/alerts"); //dont mind the name
     xmlhttp.send();
     xmlhttp.onload = () => {
         try {
