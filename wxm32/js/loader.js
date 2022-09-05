@@ -16,17 +16,16 @@ const getJSON = async url => {
     return data; // returns a promise, which resolves to this data value
 };
 
-function getList() {
+async function getList() {
     document.getElementById('wxm').innerHTML = "WXM32 & WCGQ-FM (107.3) - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
 
     try {
-        getJSON("https://acikek.com/alert").then(l => {
-            //document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
-            list = l.alerts.sort((a, b) => b.date - a.date);
-            document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
-            retry_count = 0;
-            loadList();
-        });
+        list = await getJSON("https://acikek.com/alert");
+        //document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
+        list = list.alerts.sort((a, b) => b.date - a.date);
+        document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
+        retry_count = 0;
+        loadList();
     } catch (e) {
         document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
         setTimeout(function () {
