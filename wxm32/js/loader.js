@@ -22,7 +22,7 @@ function getList() {
     try {
         getJSON("https://acikek.com/alert").then(a => {
             try {
-                list = JSON.parse(a || "{\"alerts\":[]}");
+                list = a
             } catch (e) {
                 document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
                 return;
