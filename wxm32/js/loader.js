@@ -5,29 +5,39 @@ let retry_count = 0;
 
 //i should rewrite some day
 
+//new fetch thing https://stackoverflow.com/questions/2499567/how-to-make-a-json-call-to-an-url/2499647#2499647
+
+const getJSON = async url => {
+    const response = await fetch(url);
+    if (!response.ok) // check if response worked (no 404 errors etc...)
+        throw new Error(response.statusText);
+
+    const data = response.json(); // get JSON from the response
+    return data; // returns a promise, which resolves to this data value
+};
+
 function getList() {
     document.getElementById('wxm').innerHTML = "WXM32 & WCGQ-FM (107.3) - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
-    let xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('GET', "https://acikek.com/alert"); //new host!!!!!!!
-    xmlhttp.send();
-    xmlhttp.onload = () => {
-        try {
-            list = JSON.parse(xmlhttp.responseText || "{\"alerts\":[]}");
-        } catch (e) {
-            document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
-            return;
-        }
-        list = list.alerts.sort((a, b) => b.date - a.date);
-        document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
-        retry_count = 0;
-        loadList();
-    }
-    xmlhttp.onerror = () => {
+
+    try {
+        getJSON("https://acikek.com/alert").then(a => {
+            try {
+                list = JSON.parse(a || "{\"alerts\":[]}");
+            } catch (e) {
+                document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
+                return;
+            }
+            list = list.alerts.sort((a, b) => b.date - a.date);
+            document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
+            retry_count = 0;
+            loadList();
+        });
+    } catch (e) {
         document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
         setTimeout(function () {
             if (retry_count < 20) getList();
         }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
-    }
+    };
 }
 
 function onLoad() {
@@ -123,7 +133,7 @@ const event_levels = {
     'TXF': 'ADV',
     'TXO': 'ADV',
     'TXP': 'ADV',
-}
+};
 
 function getLevel(e) {
     const l = event_levels;
@@ -150,7 +160,7 @@ function gc(e, d = false) {
             out = 'unknown';
             break;
     }
-   return out + (d && out != 'unknown' ? '-dark' : '');
+    return out + (d && out != 'unknown' ? '-dark' : '');
 }
 
 const alert_types = {
@@ -236,7 +246,7 @@ const alert_types = {
     'Transmitter Carrier Off': 'TXF',
     'Transmitter Carrier On': 'TXO',
     'Transmitter Primary On': 'TXP',
-}
+};
 
 const alert_list = Object.keys(alert_types);
 
@@ -253,7 +263,7 @@ async function loadList() {
     }
 
     for (let [i, alert] of list.entries()) {
-        if (i > length+1) return; //what
+        if (i > length + 1) return; //what
         let date = new Date(alert.date);
         let row = table.insertRow(-1);
         let fdate = Intl.DateTimeFormat('en-US', {
@@ -265,12 +275,12 @@ async function loadList() {
         }).format(date);
 
         row.insertCell(0).innerHTML = `<p style='font-size: 12pt;'>${fdate.replace(',', '<br>')}</p>`;
-        row.insertCell(1).innerHTML = `<p>${alert.org}<br><span style='font-size: 8pt;'>${alert.orf}</span></p>`;
+        row.insertCell(1).innerHTML = `<p>${alert.originator}<br><span style='font-size: 8pt;'>${alert.originator_full}</span></p>`;
         let event = row.insertCell(2);
-        event.innerHTML = `<p>${alert.typ}<br><span style='font-size: 8pt;'>${alert.evn}</span></p>`;
-        event.className = gc(alert.typ, dark);
+        event.innerHTML = `<p>${alert.event_code}<br><span style='font-size: 8pt;'>${alert.event_full}</span></p>`;
+        event.className = gc(alert.event_code, dark);
         //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
-        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.msg.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.typ, dark)}'>$&</span>`)}</p>`;
+        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.message.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.event_code, dark)}'>$&</span>`)}</p>`;
     }
     if (dark) sa();
 }
