@@ -20,13 +20,8 @@ function getList() {
     document.getElementById('wxm').innerHTML = "WXM32 & WCGQ-FM (107.3) - <span style='color: #FFFF90;'>Connecting to alert server.</span>";
 
     try {
-        getJSON("https://acikek.com/alert").then(a => {
-            try {
-                list = a
-            } catch (e) {
-                document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
-                return;
-            }
+        getJSON("https://acikek.com/alert").then(list => {
+            //document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Error parsing alerts.</span>`;
             list = list.alerts.sort((a, b) => b.date - a.date);
             document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #90FF90;'>Collected ${list.length} alert${list.length == 1 ? '' : 's'}.</span>`;
             retry_count = 0;
