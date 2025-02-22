@@ -2,6 +2,10 @@ html,
 body {
     height: 100%;
     background: black;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    box-sizing: border-box;
 }
 
 * {
@@ -30,4 +34,12 @@ table {
 
 .ndmbgold {
     color: #FFD700;
+}
+
+.footer {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    bottom: 0;
+    text-align: left;
 }

@@ -1,6 +1,6 @@
 let dark = false;
 let list;
-const retry_interval = [100, 600, 1400, 6000, 10000];
+const retry_interval = [3000, 5000, 8000, 10000, 15000, 30000];
 let retry_count = 0;
 
 //i should rewrite some day
@@ -27,16 +27,48 @@ async function getList() {
         retry_count = 0;
         loadList();
     } catch (e) {
+        // document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
+        // setTimeout(function () {
+        //     if (retry_count < 20) getList();
+        // }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
+        // this is so extra
         document.getElementById('wxm').innerHTML = `WXM32 & WCGQ-FM (107.3) - <span style='color: #FF9090;'>Could not connect to alert server. (${retry_count + 1} tr${(retry_count + 1) == 1 ? 'y' : 'ies'})</span>`;
-        setTimeout(function () {
-            if (retry_count < 20) getList();
-        }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
+
+        // Calculate next retry time by adding the retry interval to the current time
+        nextRetryTime = Date.now() + retry_interval[Math.min(retry_count++, retry_interval.length - 1)];
+
+        // Start countdown for retry
+        let retryMessage = document.createElement('span');
+        retryMessage.style.color = '#FF9090';
+        retryMessage.innerText = ` Retrying in calculating...`;
+
+        document.getElementById('wxm').appendChild(retryMessage);
+
+        const countdownInterval = setInterval(() => {
+            const remaining_ms = nextRetryTime - Date.now();
+            const remaining_deciseconds = Math.max(remaining_ms / 100, 0); // Convert milliseconds to deciseconds
+
+            if (remaining_deciseconds <= 0) {
+                clearInterval(countdownInterval);
+                // setTimeout(function () {
+                    /* if (retry_count < 20)*/ getList();
+                // }, retry_interval[Math.min(retry_count++, retry_interval.length - 1)]);
+            } else {
+                // Calculate seconds and deciseconds for display
+                const seconds = Math.floor(remaining_deciseconds / 10);
+                const deciseconds = Math.floor(remaining_deciseconds % 10);
+                retryMessage.innerText = ` Retrying in ${seconds}.${deciseconds} seconds...`;
+            }
+        }, 100); // Update every 100ms (decisecond precision)
+
     };
 }
 
 function onLoad() {
     getList();
 }
+
+// this is pretty bad, lol!
 
 const event_levels = {
     'ADR': 'ADV',
@@ -245,43 +277,56 @@ const alert_types = {
 const alert_list = Object.keys(alert_types);
 
 async function loadList() {
-    let table = document.getElementById('maintable');
+    const tableBody = document.getElementById('alert-list-body');
+    const emptyMessage = document.getElementById('empty-message');
 
-    let length = parseInt(document.getElementById('amount').value) || 20;
+    tableBody.innerHTML = ''; // Clear current table rows
 
-    if (table.rows.length > 1) {
-        let rowCount = table.rows.length;
-        for (let i = 1; i < rowCount; i++) {
-            table.deleteRow(1);
+    if (list.length === 0) {
+        emptyMessage.style.display = 'block'; // Show message if no alerts
+    } else {
+        emptyMessage.style.display = 'none'; // Hide message if there are alerts
+
+        let length = parseInt(document.getElementById('amount').value) || 20;
+
+        if (tableBody.rows.length > 1) {
+            let rowCount = tableBody.rows.length;
+            for (let i = 1; i < rowCount; i++) {
+                tableBody.deleteRow(1);
+            }
         }
-    }
 
-    for (let [i, alert] of list.entries()) {
-        if (i > length + 1) return; //what
-        let date = new Date(alert.date);
-        let row = table.insertRow(-1);
-        let fdate = Intl.DateTimeFormat('en-US', {
-            year: '2-digit',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-        }).format(date);
+        for (let [i, alert] of list.entries()) {
+            if (i > length + 1) return; //what
+            let date = new Date(alert.date);
+            let row = tableBody.insertRow(-1);
+            let fdate = new Intl.DateTimeFormat(navigator.language, {
+                year: '2-digit',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            }).format(date);
 
-        row.insertCell(0).innerHTML = `<p style='font-size: 12pt;'>${fdate.replace(',', '<br>')}</p>`;
-        row.insertCell(1).innerHTML = `<p>${alert.originator}<br><span style='font-size: 8pt;'>${alert.originator_full}</span></p>`;
-        let event = row.insertCell(2);
-        event.innerHTML = `<p>${alert.event_code}<br><span style='font-size: 8pt;'>${alert.event_full}</span></p>`;
-        event.className = gc(alert.event_code, dark);
-        //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
-        row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.message.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.event_code, dark)}'>$&</span>`)}</p>`;
+            // Manually extract the date and time parts
+            let [datePart, timePart] = fdate.split(/\s*,\s*|\s+/); // Handles both space and comma
+
+            row.insertCell(0).innerHTML = `<p style='font-size: 12pt;'>${datePart}<br>${timePart}</p>`;
+
+            row.insertCell(1).innerHTML = `<p>${alert.originator}<br><span style='font-size: 8pt;'>${alert.originator_full}</span></p>`;
+            let event = row.insertCell(2);
+            event.innerHTML = `<p>${alert.event_code}<br><span style='font-size: 8pt;'>${alert.event_full}</span></p>`;
+            event.className = gc(alert.event_code, dark);
+            //row.insertCell(2).innerHTML = `<span style='text-align: center;color: ${getECol(alert.typ)};'>${alert.typ}</span><br><span style='font-size: 8pt;text-align: center;color: ${getECol(alert.typ)};'>${alert.evn}</span>`
+            row.insertCell(3).innerHTML = `<p style='font-size: 12pt; font-size:calc(50% + 0.6vw)'>${alert.message.replace(new RegExp(`(${alert_list.join('|')})`, 'g'), `<span class='${gc(alert.event_code, dark)}'>$&</span>`)}</p>`;
+        }
     }
     if (dark) sa();
 }
 
 function switchcol() {
     dark = !dark;
-    document.getElementById('maintable').classList.toggle('dark-mode');
     sa();
 }
 
@@ -302,4 +347,6 @@ function sa() {
     for (test of tests) {
         test.classList.toggle('test-dark');
     }
+
+    document.body.classList.toggle('dark-mode');
 }

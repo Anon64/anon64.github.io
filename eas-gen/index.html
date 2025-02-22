@@ -1,75 +1,109 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta property="og:title" content="EAS Generator">
-    <meta property="og:description" content="Generate eas header codes">
-    <meta property="og:image" content="https://anon64.github.io/eas-gen/icon.png">
-    <meta property="theme-color" content="#696969">
-    <meta property="og:site_name" content="Anon64">
+  <head>
+    <meta property="og:title" content="EAS SAME Code Generator" />
+    <meta property="og:description" content="Generate eas same codes" />
+    <meta
+      property="og:image"
+      content="https://anon64.github.io/eas-gen/icon.png"
+    />
+    <meta property="theme-color" content="#696969" />
+    <meta property="og:site_name" content="Anon64" />
     <title>EAS Generator</title>
-    <link rel='stylesheet' href='/eas-gen/css/main.css'>
-    <link rel='icon' type='image/x-icon' href='/eas-gen/favicon.ico'>
-    <script src="/eas-gen/js/generator.js"></script>
-</head>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script src="js/generator.js"></script>
+  </head>
 
-<body onload="onload()">
-    <h1 class="ndmbgold">EAS Header Generator</h1>
-    <label for='org'>Originator Code</label>
-    <select name='org' id='org'>
-    </select>
-    <br><br>
-    <label for='eee'>Event Code</label>
-    <select name='eee' id='eee'>
-    </select>
-    <br><br>
-    <div class='ab'>
-        <label id='duration' for='ddown'>Duration: 00:15</label>
-        <input type='button' value='-' onclick='ddown()' id='ddown'>
-        <input type='button' value='+' onclick='dup()'>
+  <body onload="onload()">
+    <div>
+      <h1 class="ndmbgold">EAS Header Generator</h1>
+      <input type="button" value="Home" onclick="window.location.href='/'" />
     </div>
-    <br>
-    <label for='ctr'>Country</label>
-    <select name='ctr' id='ctr' onchange='loadStates()' onfocus='this.selectedIndex = -1'>
-        <option value='US'>United States</option>
-        <option value='CA'>Canada</option>
-    </select>
-    <br><br>
-    <label for='sta'>State</label>
-    <select name='sta' id='sta' onchange='loadAreas()' onfocus='this.selectedIndex = -1'>
-    </select>
-    <br><br>
-    <label for='loc'>Location</label>
-    <select name='loc' id='loc'>
-    </select>
-    <br><br>
-    <label for='are'>County/Area</label>
-    <select name='are' id='are'>
-    </select>
-    <br><br>
-    <input type='button' value='Add' onclick='addLoc()'>
-    <br><br>
-    <label for='callsign'>Callsign</label>
-    <input type='text' id='callsign' placeholder='NotEASy'>
-    <br><br>
-    <input type='button' value='Submit' onclick='generate()'>
-    <br><br>
-    <p id="result">Result:</p>
-    <br>
-    <table id='maintable' border=1 cellpadding='5px'>
+    <div style="flex: 1;">
+      <br /><br />
+      <label for="org">Originator Code</label>
+      <select name="org" id="org"></select>
+      <br /><br />
+      <label for="eee">Event Code</label>
+      <select name="eee" id="eee"></select>
+      <br /><br />
+      <div class="ab">
+        <label id="duration" for="ddown">Duration: 00:15</label>
+        <input type="button" value="-" onclick="ddown()" id="ddown" />
+        <input type="button" value="+" onclick="dup()" />
+      </div>
+      <br />
+      <label for="ctr">Country</label>
+      <select
+        name="ctr"
+        id="ctr"
+        onchange="loadStates()"
+        onfocus="this.selectedIndex = -1"
+      >
+        <option value="US">United States</option>
+        <option value="CA">Canada</option>
+      </select>
+      <br /><br />
+      <label for="sta">State</label>
+      <select
+        name="sta"
+        id="sta"
+        onchange="loadAreas()"
+        onfocus="this.selectedIndex = -1"
+      ></select>
+      <br /><br />
+      <label for="loc">Location</label>
+      <select name="loc" id="loc"></select>
+      <br /><br />
+      <label for="are">County/Area</label>
+      <select name="are" id="are"></select>
+      <br /><br />
+      <input type="button" value="Add" onclick="addLoc()" />
+      <br /><br />
+      <label for="callsign">Callsign</label>
+      <input type="text" id="callsign" placeholder="NotEASy" />
+      <br /><br />
+      <input type="button" value="Submit" onclick="generate()" />
+      <br /><br />
+      <p id="result">Result:</p>
+      <br />
+      <table id="maintable" border="1" cellpadding="5px">
         <colgroup>
-            <col>
-            <col>
+          <col />
+          <col />
         </colgroup>
         <tr>
-            <td>
-                <p>Locations (Click to remove)</p>
-            </td>
-            <td>
-                <p>FIPS</p>
-            </td>
+          <td>
+            <p>Locations (Click to remove)</p>
+          </td>
+          <td>
+            <p>FIPS</p>
+          </td>
         </tr>
-    </table>
-</body>
+      </table>
+    </div>
 
+    <div class="footer">
+      <footer>
+        <p id="last-updated">Last updated ...</p>
+      </footer>
+    </div>
+
+    <!-- perhaps it will be better for localization! -->
+
+    <script>
+      const timestamp = new Date("2025-02-21T15:00:00Z"); // utc...
+
+      const formattedDate = new Intl.DateTimeFormat(navigator.language, {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(timestamp);
+
+      document.getElementById(
+        "last-updated"
+      ).innerHTML = `Last updated ${formattedDate}`;
+    </script>
+  </body>
 </html>

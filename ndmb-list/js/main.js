@@ -1,4 +1,4 @@
-const DEBUG = false;
+const DEBUG = false; // what was
 
 function wait(ms) {
     return new Promise(r => {

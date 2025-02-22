@@ -5,18 +5,8 @@ body {
     padding: 0;
     background: black;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-table {
-    background-color: #FFFFFF;
-    border: 1px solid black; 
-    border-collapse:collapse;
-}
-
-.dark-mode {
-    background-color: #090909;
-    color: white;
-    border: 1px solid white; 
+    display: flex;
+    flex-direction: column;
 }
 
 .warning {
@@ -65,8 +55,62 @@ table {
     position: fixed;
     top: 0;
     width: 100%;
-  }
+}
 
 .main {
-    margin-top: 80px;
+    padding-top: 100px;
+    flex: 1
+}
+
+.footer {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    bottom: 0;
+    text-align: left;
+}
+
+table {
+    table-layout: fixed;
+    background-color: #FFFFFF;
+    color:black;
+}
+
+.dark-mode table {
+    table-layout: fixed;
+    background-color: black;
+    color: white;
+}
+
+
+thead {
+    position: sticky;
+    top: 100px; /* Matches the height of the topbar, almost */
+    background-color: #263F78;
+    color: white;
+    z-index: 1;
+}
+
+
+#maintable tbody tr:nth-child(odd) {
+    background-color: #dedede; /* Light gray for odd rows in light mode */
+}
+
+#maintable tbody tr:nth-child(even) {
+    background-color: #ffffff; /* White for even rows in light mode */
+}
+
+/* Dark Mode */
+.dark-mode #maintable tbody tr:nth-child(odd) {
+    background-color: #333333; /* Darker background for odd rows in dark mode */
+}
+
+.dark-mode #maintable tbody tr:nth-child(even) {
+    background-color: #222222; /* Dark background for even rows in dark mode */
+}
+
+#maintable tr td:nth-child(1),
+#maintable tr td:nth-child(2),
+#maintable tr td:nth-child(3) {
+    text-align: center;
 }

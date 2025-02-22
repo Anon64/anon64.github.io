@@ -8,24 +8,39 @@
     <meta property="theme-color" content="#FF0000">
     <meta property="og:site_name" content="Anon64">
     <title>Anon64's Stuff</title>
-    <link rel='icon' type='image/x-icon' href='/ndmb-list/img/bighead.ico'>
-    <link rel='stylesheet' type='text/css' href='/main.css'>
+    <link rel='icon' type='image/x-icon' href='ndmb-list/img/bighead.ico'>
+    <link rel='stylesheet' type='text/css' href='main.css'>
 </head>
 
 <body>
     <h1>Anon64's stuff or something</h1>
     <br>
-    <p><a href="ndmb-list/" class='ndmbgold'>NDMB Tracklist</a> - just the NDMB tracklist.</p>
     <!--<p><a href="joe.game/" class='ndmbgold'>joe.game</a> - a platformer game I'm making (unfinished/postponed)</p>-->
-    <p><a href="mpp2/" class='ndmbgold'>MPP2</a> - Multiplayer Piano2 (just a clone)</p>
+    <!-- <p><a href="mpp2/" class='ndmbgold'>MPP2</a> - Multiplayer Piano2 (just a clone)</p> -->
     <p><a href="wxm32/" class='ndmbgold'>WXM32 & WCGQ-FM (107.3)</a> - List of alerts from WXM32 (NOAA radio station) and 107.3FM/98.3FM (local radio station)</p>
-    <p><a href="weatherscanr/" class='ndmbgold' title='currently "broken"'><s>Weatherscan Radio</a> - Online radio station for weatherscan</s></p>
+    <!-- <p><a href="weatherscanr/" class='ndmbgold' title='currently "broken"'><s>Weatherscan Radio</a> - Online radio station for weatherscan</s></p> -->
     <p><a href="eas-gen/" class='ndmbgold'>EAS Gen</a> - EAS header code generator (not audio)</p>
+    <p><a href="ndmb-list/" class='ndmbgold'>NDMB Tracklist</a> - just the NDMB tracklist.</p>
     <div class="footer">
         <footer>
-            <p>Last updated 8-12-21</p>
+            <p id="last-updated">Last updated ... </p>
         </footer>
     </div>
+
+    <!-- perhaps it will be better for localization! -->
+
+    <script>
+        const timestamp = new Date("2025-02-21T15:00:00Z"); // utc...
+    
+        const formattedDate = new Intl.DateTimeFormat(navigator.language, {
+            year: '2-digit',
+            month: '2-digit',
+            day: '2-digit',
+        }).format(timestamp);
+    
+        document.getElementById('last-updated').innerHTML = `Last updated ${formattedDate}`;
+    </script>
+
 </body>
 
 </html>
