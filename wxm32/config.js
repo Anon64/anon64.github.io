@@ -1,7 +1,7 @@
 // Where the alert server lives. The page works from whatever is here: change it here, nowhere else.
 window.WXM32_CONFIG = {
   api: 'https://alerts.anon64.dev',   // the alert server (alert-server/ in this project), reachable from the internet
-  title: 'WXM32 & WCGQ-FM',
+  title: 'WXM32 & Columbus radio',
   pageSize: 60,                        // alerts shown at a time before "Show more"
 };
 // Testing on your own machine: open the page from localhost or a LAN address with ?api=http://<that address>:8787 to point it at a local server. Ignored on any other host.

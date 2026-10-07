@@ -1,8 +1,8 @@
-// WXM32 & WCGQ-FM alert list. Loads the compact v3 JSON from the alert server, decodes it here in the browser (decode.js), and keeps it current over a
+// WXM32 + Columbus radio stations alert list. Loads the compact v3 JSON from the alert server, decodes it here in the browser (decode.js), and keeps it current over a
 // server-sent event stream. Everything the page shows comes from that one document; filtering and search run locally.
 import { decode, stamp } from './decode.js';
 
-const CFG = { api: '', title: 'WXM32 & WCGQ-FM', pageSize: 60, ...window.WXM32_CONFIG };
+const CFG = { api: '', title: 'WXM32 & Columbus radio', pageSize: 60, ...window.WXM32_CONFIG };
 const $ = (id) => document.getElementById(id);
 const h = (tag, props = {}, ...kids) => {
   const el = document.createElement(tag);
@@ -18,7 +18,7 @@ const LEVELS = [
 const levelOf = (a) => a.level ?? 'none';
 const S = {
   alerts: [], byId: new Map(), fresh: new Set(), lastId: 0, loaded: false, shown: CFG.pageSize, retry: 0, unread: 0,
-  sources: [{ id: 'wxm32', name: 'WXM32', full: 'NOAA Weather Radio, Columbus GA (162.400 MHz)' }, { id: 'wcgq', name: 'WCGQ-FM', full: '107.3 FM, Columbus GA' }, { id: 'other', name: 'Other', full: 'Other stations' }],
+  sources: [{ id: 'wxm32', name: 'WXM32', full: 'NOAA Weather Radio, Columbus GA (162.400 MHz)' }, { id: 'wcgq', name: 'WCGQ-FM', full: 'Q107.3 FM, Columbus GA' }, { id: 'wkcn', name: 'WKCN', full: 'Kiss 99.3 FM, Columbus GA' }, { id: 'wltc', name: 'WLTC', full: 'Lite 103.7 FM, Columbus GA' }, { id: 'other', name: 'Other', full: 'Other stations' }], // replaced by the server's own list (/stats) when it answers
   f: { source: '', levels: new Set(LEVELS.map((l) => l.id)), q: '' },
 };
 const srcName = (id) => S.sources.find((s) => s.id === id)?.name ?? id;
@@ -92,7 +92,7 @@ function readUrl() {
 function buildControls() {
   const counts = (id) => S.alerts.filter((a) => (id ? a.source === id : true)).length;
   const seg = $('sources'); seg.replaceChildren();
-  for (const s of [{ id: '', name: 'All stations' }, ...S.sources.filter((s) => counts(s.id) || ['wxm32', 'wcgq'].includes(s.id))]) {
+  for (const s of [{ id: '', name: 'All stations' }, ...S.sources.filter((s) => s.id !== 'other' || counts(s.id))]) { // every station the server monitors, even one with no alerts yet; "Other" only when something is filed there
     seg.append(h('button', { type: 'button', 'aria-pressed': String(S.f.source === s.id), title: s.full ?? '', onclick: () => { S.f.source = s.id; S.shown = CFG.pageSize; syncUrl(); buildControls(); render(); } }, s.name, h('small', { text: String(counts(s.id)) })));
   }
   const chips = $('levels'); chips.replaceChildren();
