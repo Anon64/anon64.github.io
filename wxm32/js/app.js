@@ -18,7 +18,7 @@ const LEVELS = [
 const levelOf = (a) => a.level ?? 'none';
 const S = {
   alerts: [], byId: new Map(), fresh: new Set(), lastId: 0, loaded: false, shown: CFG.pageSize, retry: 0, unread: 0,
-  sources: [{ id: 'wxm32', name: 'WXM32', full: 'NOAA Weather Radio, Columbus GA (162.400 MHz)' }, { id: 'wcgq', name: 'WCGQ-FM', full: 'Q107.3 FM, Columbus GA' }, { id: 'wkcn', name: 'WKCN', full: 'Kiss 99.3 FM, Columbus GA' }, { id: 'wltc', name: 'WLTC', full: 'Lite 103.7 FM, Columbus GA' }, { id: 'wrbl', name: 'WRBL', full: 'WRBL-TV 3, Columbus GA' }, { id: 'nwr', name: 'Other NOAA radio', full: 'Other NOAA Weather Radio transmitters' }, { id: 'other', name: 'Other', full: 'Other stations' }], // replaced by the server's own list (/stats) when it answers
+  sources: [{ id: 'wxm32', name: 'WXM32', full: 'NOAA Weather Radio, Columbus GA (162.400 MHz)' }, { id: 'wcgq', name: 'WCGQ-FM', full: 'Q107.3 FM, Columbus GA' }, { id: 'wkcn', name: 'WKCN', full: 'Kiss 99.3 FM, Columbus GA' }, { id: 'wltc', name: 'WLTC', full: 'Lite 103.7 FM, Columbus GA' }, { id: 'wrbl', name: 'WRBL', full: 'WRBL-TV 3, Columbus GA' }, { id: 'wtvm', name: 'WTVM', full: 'WTVM-TV 9, Columbus GA' }, { id: 'nwr', name: 'Other NOAA radio', full: 'Other NOAA Weather Radio transmitters' }, { id: 'other', name: 'Other', full: 'Other stations' }], // replaced by the server's own list (/stats) when it answers
   f: { source: '', levels: new Set(LEVELS.map((l) => l.id)), q: '' },
 };
 const srcName = (id) => S.sources.find((s) => s.id === id)?.name ?? id;
