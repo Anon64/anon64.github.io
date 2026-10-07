@@ -10,7 +10,7 @@
 //     "events":   { "TOR": ["Tornado Warning", "#FF0000", "WRN"] }   optional: names, WSv4 colours and levels of the codes in use
 //     "orgs":     { "WXR": "National Weather Service" } }            optional
 //   t = epoch seconds; station / area / head / tail = positions in the lists above; tail -1 = the head is the whole text.
-//   flags: 1 = a test or joke alert.   extra: { s: source id, i: listener db id, r: recording name }
+//   flags (bits): 1 = a test or joke alert, 2 = hidden by the editor, 4 = removed by the editor (a tombstone: the id stays, the alert is gone from every public answer).   extra: { s: source id, i: listener db id, r: recording name }
 //
 //   message = heads[head] + <expiry time in the reader's own time zone and format> + tails[tail]
 //
@@ -40,7 +40,7 @@ export function decodeAlert(doc, rec, id, opts = {}) {
     originator: org, originator_full: doc.orgs?.[org] ?? ORG_NAMES[org] ?? org, callsign: doc.stations[si] ?? '',
     event_code: event, event_full: ev?.[0] ?? event, level: ev?.[2] ?? null, color: ev?.[1] ?? '#696969',
     start_time: clock(ms, opts), end_time: minutes ? clock(ms + minutes * 60_000, opts) : null, length: lengthText(minutes),
-    message: messageOf(doc, rec, opts), fips: doc.areas[ai] ?? [], test: !!(flags & 1), source: x.s ?? 'other', recording: x.r ?? null, type: 'alert',
+    message: messageOf(doc, rec, opts), fips: doc.areas[ai] ?? [], test: !!(flags & 1), hidden: !!(flags & 2), removed: !!(flags & 4), source: x.s ?? 'other', recording: x.r ?? null, type: 'alert',
   };
 }
 

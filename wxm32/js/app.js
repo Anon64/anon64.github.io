@@ -1,6 +1,6 @@
 // WXM32 + Columbus radio stations alert list. Loads the compact v3 JSON from the alert server, decodes it here in the browser (decode.js), and keeps it current over a
 // server-sent event stream. Everything the page shows comes from that one document; filtering and search run locally.
-import { decode, stamp } from './decode.js?v=2026-10-07c';
+import { decode, stamp } from './decode.js?v=2026-10-07d';
 
 const CFG = { api: '', title: 'WXM32 & Columbus stations', pageSize: 60, ...window.WXM32_CONFIG };
 const $ = (id) => document.getElementById(id);
@@ -185,6 +185,10 @@ function connect() {
   es.onopen = () => setLive(true);
   es.addEventListener('alert', () => loadNew().catch(() => {}));
   es.addEventListener('update', () => loadNew().catch(() => {}));
+  es.addEventListener('reset', () => { // the archive was edited (an alert hidden or removed): start again from the server's list
+    S.byId = new Map(); S.alerts = []; S.lastId = 0;
+    loadAll().then(() => { buildControls(); render(true); }).catch(() => {});
+  });
   es.onerror = () => setLive(false, 'Reconnecting…');
 }
 setInterval(() => { if (S.loaded) loadNew().then(() => $('updated').textContent = `Updated ${dateFmt.format(Date.now())}`).catch(() => {}); }, 60_000); // a safety net if the live stream is blocked
