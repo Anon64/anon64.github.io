@@ -1,54 +1,21 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WXM32 &amp; Columbus stations alerts</title>
-  <meta name="description" content="Emergency alerts heard on NOAA Weather Radio WXM32 (162.400 MHz) and Columbus GA stations WCGQ 107.3, WKCN 99.3, WLTC 103.7, WRBL TV 3 and WTVM TV 9, live and since 2020.">
+  <meta name="description" content="Emergency alerts heard on NOAA Weather Radio WXM32 and Columbus GA stations. Moved to alerts.anon64.dev.">
   <meta property="og:title" content="WXM32">
   <meta property="og:description" content="List of alerts from WXM32, WCGQ 107.3, WKCN 99.3, WLTC 103.7, WRBL and WTVM">
   <meta property="og:image" content="https://anon64.github.io/wxm32/noaa.png">
   <meta property="og:site_name" content="Anon64">
   <meta name="theme-color" content="#0d1117">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="stylesheet" href="css/style.css?v=2026-10-07d">
-  <script>try { const t = localStorage.getItem('wxm32-theme'); if (t) document.documentElement.dataset.theme = t; else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light'; } catch {}</script>
-  <script src="config.js?v=2026-10-07d"></script>
-  <script type="module" src="js/app.js?v=2026-10-07d"></script>
+  <link rel="canonical" href="https://alerts.anon64.dev/">
+  <meta http-equiv="refresh" content="0; url=https://alerts.anon64.dev/">
+  <script>location.replace('https://alerts.anon64.dev/' + location.search + location.hash);</script>
 </head>
-<body>
-  <header class="top">
-    <div class="wrap top-row">
-      <a class="brand" href="./" aria-label="WXM32 and Columbus stations alerts">
-        <img src="noaa.png" alt="" width="40" height="40">
-        <span><b>WXM32 &amp; Columbus stations</b><small>Columbus, GA · NOAA Weather Radio 162.400 MHz · WCGQ 107.3 · WKCN 99.3 · WLTC 103.7 · WRBL 3 · WTVM 9</small></span>
-      </a>
-      <div class="top-actions">
-        <span class="live" id="live" role="status" aria-live="polite"><i></i><span id="live-text">Connecting…</span></span>
-        <button class="icon" id="theme" type="button" title="Switch light / dark" aria-label="Switch light / dark theme">◐</button>
-        <a class="btn" href="/">Home</a>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-    <section class="stats" aria-label="Summary" id="stats"></section>
-
-    <section class="controls" aria-label="Filters">
-      <div class="seg" id="sources" role="group" aria-label="Station"></div>
-      <div class="chips" id="levels" role="group" aria-label="Severity"></div>
-      <label class="search"><span class="sr">Search alerts</span><input id="q" type="search" placeholder="Search alerts, counties, callsigns…" autocomplete="off"></label>
-    </section>
-
-    <p class="note" id="count" aria-live="polite"></p>
-    <div id="list" class="list" aria-live="polite"></div>
-    <div class="more"><button class="btn" id="more" type="button" hidden>Show more</button></div>
-    <div id="state" class="state" hidden></div>
-  </main>
-
-  <footer class="wrap foot">
-    <p id="updated">Loading…</p>
-    <p>Times are shown in your own time zone and format. Alerts are decoded from the broadcast audio of the stations above. The archive (July 2020 – March 2023, WXM32 and WCGQ) is from the original collector; WKCN and WLTC were added in 2026; older alerts from other stations, including WRBL and WTVM, come from the same collector's Discord history.</p>
-  </footer>
+<body style="font-family:system-ui,sans-serif;background:#0d1117;color:#e8edf4;padding:2rem">
+  <p>The alerts archive has moved to <a href="https://alerts.anon64.dev/" style="color:#4f9dff">alerts.anon64.dev</a>.</p>
 </body>
 </html>
