@@ -10,6 +10,7 @@
   --live: #0f9d58; --warn: #d12f2f; --shadow: 0 1px 2px rgba(20, 30, 50, .06), 0 8px 24px rgba(20, 30, 50, .06); color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; } /* a class like .btn sets display and would otherwise win over the hidden attribute */
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--font); min-height: 100vh; display: flex; flex-direction: column; }
 .wrap { width: min(980px, 100% - 32px); margin-inline: auto; }

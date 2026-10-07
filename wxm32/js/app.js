@@ -170,7 +170,8 @@ function render(keepScroll) {
   const frag = document.createDocumentFragment(); let day = '';
   for (const a of shown) { const k = dayKey(a.date); if (k !== day) { day = k; frag.append(h('div', { class: 'day', text: dayLabel(a.date) })); } frag.append(card(a)); }
   list.replaceChildren(frag); S.fresh.clear();
-  $('more').hidden = all.length <= S.shown; $('more').textContent = `Show more (${Math.min(CFG.pageSize, all.length - S.shown)} of ${all.length - S.shown} older)`;
+  const left = Math.max(0, all.length - S.shown); // how many older ones are not shown yet
+  $('more').hidden = left === 0; $('more').textContent = `Show more (${Math.min(CFG.pageSize, left)} of ${left} older)`;
   $('count').textContent = all.length === S.alerts.length ? `${all.length.toLocaleString()} alerts` : `${all.length.toLocaleString()} of ${S.alerts.length.toLocaleString()} alerts match`;
   const st = $('state');
   if (!all.length) { st.hidden = false; st.replaceChildren(...(S.alerts.length ? [h('h2', { text: 'No alerts match' }), h('p', { text: 'Try another station, severity or search.' })] : [h('h2', { text: 'No alerts yet' }), h('p', { text: 'When WXM32 or WCGQ-FM airs one, it appears here the moment it is decoded.' })])); } else st.hidden = true;
