@@ -2,7 +2,7 @@
 // server-sent event stream. Everything the page shows comes from that one document; filtering and search run locally.
 import { decode, stamp } from './decode.js';
 
-const CFG = { api: '', title: 'WXM32 & Columbus radio', pageSize: 60, ...window.WXM32_CONFIG };
+const CFG = { api: '', title: 'WXM32 & Columbus stations', pageSize: 60, ...window.WXM32_CONFIG };
 const $ = (id) => document.getElementById(id);
 const h = (tag, props = {}, ...kids) => {
   const el = document.createElement(tag);
@@ -18,7 +18,7 @@ const LEVELS = [
 const levelOf = (a) => a.level ?? 'none';
 const S = {
   alerts: [], byId: new Map(), fresh: new Set(), lastId: 0, loaded: false, shown: CFG.pageSize, retry: 0, unread: 0,
-  sources: [{ id: 'wxm32', name: 'WXM32', full: 'NOAA Weather Radio, Columbus GA (162.400 MHz)' }, { id: 'wcgq', name: 'WCGQ-FM', full: 'Q107.3 FM, Columbus GA' }, { id: 'wkcn', name: 'WKCN', full: 'Kiss 99.3 FM, Columbus GA' }, { id: 'wltc', name: 'WLTC', full: 'Lite 103.7 FM, Columbus GA' }, { id: 'other', name: 'Other', full: 'Other stations' }], // replaced by the server's own list (/stats) when it answers
+  sources: [{ id: 'wxm32', name: 'WXM32', full: 'NOAA Weather Radio, Columbus GA (162.400 MHz)' }, { id: 'wcgq', name: 'WCGQ-FM', full: 'Q107.3 FM, Columbus GA' }, { id: 'wkcn', name: 'WKCN', full: 'Kiss 99.3 FM, Columbus GA' }, { id: 'wltc', name: 'WLTC', full: 'Lite 103.7 FM, Columbus GA' }, { id: 'wrbl', name: 'WRBL', full: 'WRBL-TV 3, Columbus GA' }, { id: 'nwr', name: 'Other NOAA radio', full: 'Other NOAA Weather Radio transmitters' }, { id: 'other', name: 'Other', full: 'Other stations' }], // replaced by the server's own list (/stats) when it answers
   f: { source: '', levels: new Set(LEVELS.map((l) => l.id)), q: '' },
 };
 const srcName = (id) => S.sources.find((s) => s.id === id)?.name ?? id;
@@ -52,10 +52,16 @@ async function api(path) {
   if (!r.ok) throw new Error(`server answered ${r.status}`);
   return r.json();
 }
-function merge(list, fresh) {
-  for (const a of list) { if (S.byId.has(a.id)) continue; S.byId.set(a.id, a); if (fresh) S.fresh.add(a.id); }
-  S.alerts = [...S.byId.values()].sort((a, b) => b.date - a.date || b.id - a.id);
+function merge(list, fresh) { // returns how many alerts were added or changed (an alert's recording can arrive after the alert itself)
+  let n = 0;
+  for (const a of list) {
+    const old = S.byId.get(a.id);
+    if (old) { if (old.recording !== a.recording) { S.byId.set(a.id, a); n++; } continue; }
+    S.byId.set(a.id, a); n++; if (fresh) S.fresh.add(a.id);
+  }
+  if (n) S.alerts = [...S.byId.values()].sort((a, b) => b.date - a.date || b.id - a.id);
   S.lastId = Math.max(S.lastId, ...list.map((a) => a.id));
+  return n;
 }
 async function loadAll() {
   const [doc, stats] = await Promise.all([api('/v3'), api('/stats').catch(() => null)]);
@@ -65,10 +71,10 @@ async function loadAll() {
 }
 async function loadNew() {
   if (!S.loaded) return;
-  const doc = await api(`/v3?after=${S.lastId}`), list = decode(doc);
-  if (!list.length) return;
-  merge(list, true);
-  if (document.hidden) { S.unread += list.length; document.title = `(${S.unread}) ${CFG.title} alerts`; }
+  const before = S.lastId, doc = await api(`/v3?after=${Math.max(0, S.lastId - 25)}`), list = decode(doc); // a little overlap: the newest alerts may have gained a recording
+  const changed = merge(list, true), added = list.filter((a) => a.id > before).length;
+  if (!changed) return;
+  if (document.hidden && added) { S.unread += added; document.title = `(${S.unread}) ${CFG.title} alerts`; }
   render(true);
 }
 
@@ -177,6 +183,7 @@ function connect() {
   let es; try { es = new EventSource(`${CFG.api}/events`); } catch { return; }
   es.onopen = () => setLive(true);
   es.addEventListener('alert', () => loadNew().catch(() => {}));
+  es.addEventListener('update', () => loadNew().catch(() => {}));
   es.onerror = () => setLive(false, 'Reconnecting…');
 }
 setInterval(() => { if (S.loaded) loadNew().then(() => $('updated').textContent = `Updated ${dateFmt.format(Date.now())}`).catch(() => {}); }, 60_000); // a safety net if the live stream is blocked
