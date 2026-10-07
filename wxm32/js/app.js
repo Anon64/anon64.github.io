@@ -139,7 +139,7 @@ function detailPanel(a) {
       a.fips.length ? row('Areas', h('span', { class: 'codes' }, a.fips.map((f) => h('code', { text: f })))) : null,
       row('Alert', `#${a.id} · ${a.event_code}`),
     ),
-    a.recording ? h('audio', { controls: true, preload: 'none', src: CFG.api + a.recording }) : null,
+    a.recording ? h('audio', { controls: true, preload: 'none', src: `${CFG.api}/recording/${a.id}` }) : null, // the document says whether there is audio; the file itself comes from /recording/<id>
   );
 }
 function card(a) {
