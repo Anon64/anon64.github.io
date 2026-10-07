@@ -1,6 +1,6 @@
 // WXM32 + Columbus radio stations alert list. Loads the compact v3 JSON from the alert server, decodes it here in the browser (decode.js), and keeps it current over a
 // server-sent event stream. Everything the page shows comes from that one document; filtering and search run locally.
-import { decode, stamp } from './decode.js';
+import { decode, stamp } from './decode.js?v=2026-10-07a';
 
 const CFG = { api: '', title: 'WXM32 & Columbus stations', pageSize: 60, ...window.WXM32_CONFIG };
 const $ = (id) => document.getElementById(id);
