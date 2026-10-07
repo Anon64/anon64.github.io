@@ -1,6 +1,6 @@
 // Where the alert server lives. The page works from whatever is here: change it here, nowhere else.
 window.WXM32_CONFIG = {
-  api: 'https://alerts.anon64.dev',   // the alert server (alert-server/ in this project), reachable from the internet
+  api: location.hostname === 'alerts.anon64.dev' ? location.origin : 'https://alerts.anon64.dev',   // the alert server (alert-server/ in this project): when the page is served by it, the same address
   title: 'WXM32 & Columbus stations',
   pageSize: 60,                        // alerts shown at a time before "Show more"
 };
