@@ -1,6 +1,6 @@
 // WXM32 + Columbus radio stations alert list. Loads the compact v3 JSON from the alert server, decodes it here in the browser (decode.js), and keeps it current over a
 // server-sent event stream. Everything the page shows comes from that one document; filtering and search run locally.
-import { decode, stamp } from './decode.js?v=2026-10-07b';
+import { decode, stamp } from './decode.js?v=2026-10-07c';
 
 const CFG = { api: '', title: 'WXM32 & Columbus stations', pageSize: 60, ...window.WXM32_CONFIG };
 const $ = (id) => document.getElementById(id);
@@ -110,13 +110,12 @@ function buildControls() {
 
 // ---- summary --------------------------------------------------------------------------------------------------------
 function renderStats() {
-  const day = Date.now() - 864e5, last = S.alerts[0], first = S.alerts.at(-1);
+  const day = Date.now() - 864e5, last = S.alerts[0];
   const tile = (value, label) => h('div', { class: 'stat' }, h('b', { text: value }), h('span', { text: label }));
   $('stats').replaceChildren(
     tile(S.alerts.length.toLocaleString(), 'alerts on record'),
     tile(S.alerts.filter((a) => a.date >= day).length.toLocaleString(), 'in the last 24 hours'),
     tile(last ? rel(last.date) || dateFmt.format(last.date) : '–', 'latest alert'),
-    tile(first ? monthFmt.format(first.date) : '–', 'archive begins'),
   );
 }
 
@@ -172,7 +171,8 @@ function render(keepScroll) {
   list.replaceChildren(frag); S.fresh.clear();
   const left = Math.max(0, all.length - S.shown); // how many older ones are not shown yet
   $('more').hidden = left === 0; $('more').textContent = `Show more (${Math.min(CFG.pageSize, left)} of ${left} older)`;
-  $('count').textContent = all.length === S.alerts.length ? `${all.length.toLocaleString()} alerts` : `${all.length.toLocaleString()} of ${S.alerts.length.toLocaleString()} alerts match`;
+  const since = S.alerts.at(-1) ? ` · since ${monthFmt.format(S.alerts.at(-1).date)}` : ''; // where the archive begins: a quiet note here instead of a tile of its own
+  $('count').textContent = all.length === S.alerts.length ? `${all.length.toLocaleString()} alerts${since}` : `${all.length.toLocaleString()} of ${S.alerts.length.toLocaleString()} alerts match`;
   const st = $('state');
   if (!all.length) { st.hidden = false; st.replaceChildren(...(S.alerts.length ? [h('h2', { text: 'No alerts match' }), h('p', { text: 'Try another station, severity or search.' })] : [h('h2', { text: 'No alerts yet' }), h('p', { text: 'When WXM32 or WCGQ-FM airs one, it appears here the moment it is decoded.' })])); } else st.hidden = true;
   if (keepScroll) scrollTo(0, y);
