@@ -1,77 +1,21 @@
-<!DOCTYPE html>
-<html>
-
+<!doctype html>
+<html lang="en">
 <head>
-    <meta property="og:title" content="WXM32">
-    <meta property="og:description" content="List of alerts from WXM32 and WCGQ-FM (107.3)">
-    <meta property="og:image" content="https://anon64.github.io/wxm32/noaa.png">
-    <meta property="theme-color" content="#263F78">
-    <meta property="og:site_name" content="Anon64">
-    <title>WXM32</title>
-    <link rel='icon' type='image/x-icon' href='favicon.ico'>
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="js/loader.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WXM32 &amp; Columbus stations alerts</title>
+  <meta name="description" content="Emergency alerts heard on NOAA Weather Radio WXM32 and Columbus GA stations. Moved to alerts.anon64.dev.">
+  <meta property="og:title" content="WXM32">
+  <meta property="og:description" content="List of alerts from WXM32, WCGQ 107.3, WKCN 99.3, WLTC 103.7, WRBL and WTVM">
+  <meta property="og:image" content="https://anon64.github.io/wxm32/noaa.png">
+  <meta property="og:site_name" content="Anon64">
+  <meta name="theme-color" content="#0d1117">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="canonical" href="https://alerts.anon64.dev/">
+  <meta http-equiv="refresh" content="0; url=https://alerts.anon64.dev/">
+  <script>location.replace('https://alerts.anon64.dev/' + location.search + location.hash);</script>
 </head>
-
-<body onload="onLoad()">
-    <div class="topbar">
-        <h1 class="ndmbgold" id="wxm" style="margin: 0;">WXM32 & WCGQ-FM (107.3)</h1>
-        <input type="button" value="Home" onclick="window.location.href='/'">
-        <input type="button" value="↻" onclick="loadList()">
-        <select name="amount" id="amount" onchange="loadList();" onfocus="this.selectedIndex = -1;">
-            <option>20</option>
-            <option>30</option>
-            <option>40</option>
-            <option>50</option>
-            <option>75</option>
-            <option>100</option>
-            <option>250</option>
-            <option>500</option>
-            <option>1000</option>
-            <option>1500</option>
-        </select>
-        <input type="button" value="Switch Table Colors" onclick="switchcol()">
-        <p style="color: whitesmoke">All times are displayed in your local time zone and format.</p>
-    </div>
-
-    <div class="main">
-        <table id="maintable" border="1" cellpadding="5px" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Broadcaster</th>
-                    <th>Type</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody id="alert-list-body">
-            </tbody>
-        </table>        
-        <p id="empty-message" class="empty-table-message" style="display: none;">
-            No alerts available.
-        </div>
-    </div>
-
-    <div class="footer">
-        <footer>
-            <p id="last-updated">Last updated ... </p>
-        </footer>
-    </div>
-
-    <!-- perhaps it will be better for localization! -->
-
-    <script>
-        const timestamp = new Date("2025-02-21T15:00:00Z"); // utc...
-    
-        const formattedDate = new Intl.DateTimeFormat(navigator.language, {
-            year: '2-digit',
-            month: '2-digit',
-            day: '2-digit',
-        }).format(timestamp);
-    
-        document.getElementById('last-updated').innerHTML = `Last updated ${formattedDate}`;
-    </script>
+<body style="font-family:system-ui,sans-serif;background:#0d1117;color:#e8edf4;padding:2rem">
+  <p>The alerts archive has moved to <a href="https://alerts.anon64.dev/" style="color:#4f9dff">alerts.anon64.dev</a>.</p>
 </body>
-
-
 </html>
